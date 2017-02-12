@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_nuevo_contacto"
     android:layout_width="match_parent"
@@ -9,5 +10,111 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.kcastilloe.agendapersonal.NuevoContactoActivity">
+
+    <TextView
+        android:text="Nombre del contacto:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvNombreContacto"
+        android:textStyle="normal|bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/tvNombreContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/etNombreContacto"
+        android:hint="Nombre"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:text="Apellidos del contacto:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvApellidosContacto"
+        android:textStyle="normal|bold"
+        android:layout_below="@+id/etNombreContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etApellidosContacto"
+        android:hint="Apellidos"
+        android:layout_below="@+id/tvApellidosContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Teléfono del contacto:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etApellidosContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvTelefonoContacto"
+        android:textStyle="normal|bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/tvTelefonoContacto"
+        android:layout_alignRight="@+id/etApellidosContacto"
+        android:layout_alignEnd="@+id/etApellidosContacto"
+        android:id="@+id/etTelefonoContacto"
+        android:hint="Teléfono" />
+
+    <TextView
+        android:text="Dirección del contacto:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etTelefonoContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvDireccion"
+        android:textStyle="normal|bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/tvDireccion"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/etDireccionContacto"
+        android:hint="Dirección" />
+
+    <TextView
+        android:text="E-mail del contacto:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etDireccionContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvEmailContacto"
+        android:textStyle="normal|bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etEmailContacto"
+        android:layout_below="@+id/tvEmailContacto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="E-mail" />
 
 </RelativeLayout>
