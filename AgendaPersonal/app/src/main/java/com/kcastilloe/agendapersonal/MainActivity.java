@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+                /* NOTA: preguntar cómo pasarle la vista al método crearContacto() al no poder usar un onClick.*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     /* Para rellenar la lista de contactos cada vez que se inicia la actividad. */
     public void rellenarLista(ListView lista) {
-
+        /* Contacta con la BD, recoge los datos necesarios, crea objetos Contacto para cada registro,
+        * y los muestra en los items. */
     }
 
     /* Sirve para abrir la actividad necesaria para crear un nuevo contacto. */

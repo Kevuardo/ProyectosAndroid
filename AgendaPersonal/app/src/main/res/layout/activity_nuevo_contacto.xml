@@ -117,4 +117,14 @@
         android:layout_alignParentStart="true"
         android:hint="E-mail" />
 
+    <Button
+        android:text="Guardar contacto nuevo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btnGuardarContacto"
+        style="@style/Widget.AppCompat.Button.Colored" />
+
 </RelativeLayout>
