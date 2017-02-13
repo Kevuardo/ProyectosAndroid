@@ -1,4 +1,7 @@
 package com.kcastilloe.agendapersonal.persistencia;
 
-public class GestorBBDD {
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class GestorBBDD extends SQLiteOpenHelper {
+    
 }

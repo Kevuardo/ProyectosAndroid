@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".DetalleContactoActivity">
+
+
+    <!-- Compartir contacto. -->
+    <item
+        android:id="@+id/action_compartir"
+        android:icon="@drawable/ic_share_black_48dp"
+        android:title="Compartir contacto"
+        app:showAsAction="always"/>
+
+    <!-- Eliminar contacto. -->
+    <item
+        android:id="@+id/action_eliminar"
+        android:icon="@drawable/ic_delete_black_48dp"
+        android:title="ELiminar contacto"
+        app:showAsAction="always"/>
+</menu>
