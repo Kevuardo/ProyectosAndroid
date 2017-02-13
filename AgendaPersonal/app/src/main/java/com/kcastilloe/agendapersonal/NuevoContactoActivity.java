@@ -2,6 +2,7 @@ package com.kcastilloe.agendapersonal;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
         etEmailContacto = (EditText) findViewById(R.id.etEmailContacto);
     }
 
-    private void crearNuevoContacto() {
+    private void crearNuevoContacto(View view) {
         String nombreContacto = etNombreContacto.getText().toString();
         String apellidosContacto = etApellidosContacto.getText().toString();
         String telefonoContacto = etTelefonoContacto.getText().toString();
@@ -35,32 +36,25 @@ public class NuevoContactoActivity extends AppCompatActivity {
         String emailContacto = etEmailContacto.getText().toString();
         Toast t;
 
-
-
         if (nombreContacto.compareToIgnoreCase("") == 0) {
             t = Toast.makeText(this, "Introduzca un nombre, por favor.", Toast.LENGTH_LONG);
             t.show();
         } else {
-            if (apellidosContacto.compareToIgnoreCase("") == 0) {
-                t = Toast.makeText(this, "Introduzca al menos un apellido, por favor.", Toast.LENGTH_LONG);
+            if (telefonoContacto.compareToIgnoreCase("") == 0) {
+                t = Toast.makeText(this, "Introduzca un teléfono, por favor.", Toast.LENGTH_LONG);
                 t.show();
             } else {
-                if (telefonoContacto.compareToIgnoreCase("") == 0) {
-                    t = Toast.makeText(this, "Introduzca un teléfono, por favor.", Toast.LENGTH_LONG);
+                if (direccionContacto.compareToIgnoreCase("") == 0) {
+                    t = Toast.makeText(this, "Introduzca una dirección, por favor.", Toast.LENGTH_LONG);
                     t.show();
                 } else {
-                    if (direccionContacto.compareToIgnoreCase("") == 0) {
-                        t = Toast.makeText(this, "Introduzca una dirección, por favor.", Toast.LENGTH_LONG);
+                    if (emailContacto.compareToIgnoreCase("") == 0) {
+                        t = Toast.makeText(this, "Introduzca un e-mail, por favor.", Toast.LENGTH_LONG);
                         t.show();
                     } else {
-                        if (emailContacto.compareToIgnoreCase("") == 0) {
-                            t = Toast.makeText(this, "Introduzca un e-mail, por favor.", Toast.LENGTH_LONG);
-                            t.show();
-                        } else {
-                            nuevoContacto = new Contacto(nombreContacto, apellidosContacto, telefonoContacto, direccionContacto, emailContacto);
-                            t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
-                            t.show();
-                        }
+                        nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto);
+                        t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
+                        t.show();
                     }
                 }
             }

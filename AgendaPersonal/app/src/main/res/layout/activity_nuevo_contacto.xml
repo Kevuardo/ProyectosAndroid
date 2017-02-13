@@ -19,6 +19,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/btnGuardarContacto"
+        android:onClick="crearContacto"
         style="@style/Widget.AppCompat.Button.Colored" />
 
     <android.support.design.widget.FloatingActionButton

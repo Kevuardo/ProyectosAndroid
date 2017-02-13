@@ -5,7 +5,6 @@ import android.location.Location;
 public class Contacto {
 
     private String nombre = null;
-    private String apellidos = null;
     private String telefono = null;
     private String direccion = null;
     private String email = null;
@@ -13,9 +12,8 @@ public class Contacto {
 
     /* Constructor. */
 
-    public Contacto(String nombre, String apellidos, String telefono, String direccion, String email) {
+    public Contacto(String nombre,  String telefono, String direccion, String email) {
         this.nombre = nombre;
-        this.apellidos = apellidos;
         this.telefono = telefono;
         this.direccion = direccion;
         this.email = email;
@@ -29,14 +27,6 @@ public class Contacto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
     }
 
     public String getTelefono() {
