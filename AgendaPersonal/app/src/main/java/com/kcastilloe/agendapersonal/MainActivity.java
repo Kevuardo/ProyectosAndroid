@@ -28,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-                /* NOTA: preguntar cómo pasarle la vista al método crearContacto() al no poder usar un onClick.*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_buscar:
-
+                /* NOTA: preguntar cómo pasarle la vista al método crearContacto() al no poder usar un onClick.*/
                 return true;
             case R.id.action_ajustes:
                 return true;
