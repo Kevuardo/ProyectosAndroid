@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
+import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
 public class NuevoContactoActivity extends AppCompatActivity {
 
@@ -15,6 +16,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
     private EditText etDireccionContacto;
     private EditText etEmailContacto;
     private Contacto nuevoContacto;
+    private GestorBBDD gbd = new GestorBBDD(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
         etEmailContacto = (EditText) findViewById(R.id.etEmailContacto);
     }
 
-    private void crearNuevoContacto(View view) {
+    public void crearNuevoContacto(View view) {
         String nombreContacto = etNombreContacto.getText().toString();
         String telefonoContacto = etTelefonoContacto.getText().toString();
         String direccionContacto = etDireccionContacto.getText().toString();
@@ -50,6 +52,8 @@ public class NuevoContactoActivity extends AppCompatActivity {
                         t.show();
                     } else {
                         nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto);
+                        gbd.añadirContacto(nuevoContacto);
+                        gbd.listarContactos();
                         t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
                         t.show();
                     }
