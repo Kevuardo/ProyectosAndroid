@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lvListaContactos = (ListView) findViewById(R.id.lvListaContactos);
+        //lvListaContactos = (ListView) findViewById(R.id.lvListaContactos);
         rellenarLista(lvListaContactos);
     }
 
