@@ -11,7 +11,6 @@ import com.kcastilloe.agendapersonal.modelo.Contacto;
 public class NuevoContactoActivity extends AppCompatActivity {
 
     private EditText etNombreContacto;
-    private EditText etApellidosContacto;
     private EditText etTelefonoContacto;
     private EditText etDireccionContacto;
     private EditText etEmailContacto;
@@ -22,7 +21,6 @@ public class NuevoContactoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_contacto);
         etNombreContacto = (EditText) findViewById(R.id.etNombreContacto);
-        etApellidosContacto = (EditText) findViewById(R.id.etApellidosContacto);
         etTelefonoContacto = (EditText) findViewById(R.id.etTelefonoContacto);
         etDireccionContacto = (EditText) findViewById(R.id.etDireccionContacto);
         etEmailContacto = (EditText) findViewById(R.id.etEmailContacto);
@@ -30,7 +28,6 @@ public class NuevoContactoActivity extends AppCompatActivity {
 
     private void crearNuevoContacto(View view) {
         String nombreContacto = etNombreContacto.getText().toString();
-        String apellidosContacto = etApellidosContacto.getText().toString();
         String telefonoContacto = etTelefonoContacto.getText().toString();
         String direccionContacto = etDireccionContacto.getText().toString();
         String emailContacto = etEmailContacto.getText().toString();
