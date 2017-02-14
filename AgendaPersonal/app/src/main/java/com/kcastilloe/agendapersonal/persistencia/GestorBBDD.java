@@ -34,7 +34,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    /* Método para añadir contactos a la BD. */
+    /* Método para añadir contactos a la BD. El id no es necesario pasarlo como parámetro porque es autoincremental. */
     public void añadirContacto(Contacto nuevoContacto) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -48,22 +48,24 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
 
     public ArrayList listarContactos(){
-        String nombreContacto = null;
-        String telefonoContacto = null;
-        String direccionContacto = null;
-        String emailContacto = null;
+        int idContactoAlmacenado = 0;
+        String nombreContactoAlmacenado = null;
+        String telefonoContactoAlmacenado = null;
+        String direccionContactoAlmacenado = null;
+        String emailContactoAlmacenado = null;
         Contacto contactoAlmacenado;
 
-        alContactos.clear(); /* Primero nos aseguramos de que está vacío para evitar que se dupliquen items. */
+        alContactos.clear(); /* Primero nos aseguramos de que está vacío para evitar que se dupliquen los items en el ListView. */
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from contacto", null);
         if (cursor.moveToFirst()) {
             do {
-                nombreContacto = cursor.getString(1);
-                direccionContacto = cursor.getString(2);
-                telefonoContacto = cursor.getString(3);
-                emailContacto = cursor.getString(4);
-                contactoAlmacenado = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto);
+                idContactoAlmacenado = cursor.getInt(1);
+                nombreContactoAlmacenado = cursor.getString(2);
+                telefonoContactoAlmacenado = cursor.getString(3);
+                direccionContactoAlmacenado = cursor.getString(4);
+                emailContactoAlmacenado = cursor.getString(5);
+                contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado);
                 alContactos.add(contactoAlmacenado);
             } while (cursor.moveToNext());
         }
