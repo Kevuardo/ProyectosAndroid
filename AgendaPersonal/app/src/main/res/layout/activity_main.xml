@@ -39,7 +39,7 @@
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/orden_alfabetico_layout" />
+            layout="@layout/item_lista_layout" />
     </LinearLayout>
 
 </LinearLayout>
