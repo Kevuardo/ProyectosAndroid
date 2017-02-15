@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class ListaPersonalizada extends ArrayAdapter<Contacto> {
 
-    private Activity contexto;
     private ArrayList<Contacto> alContactos = new ArrayList();
     private TextView tvNombre, tvTelefono;
     private int idVistaElemento = 0;
@@ -28,32 +27,28 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
     }
 
     /* Recoge la vista en la que se ha de hacer el volcado de datos sobre la lista. */
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vistaFila = convertView;
         if (vistaFila == null) {
-        //Creación de la vista – general
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vistaFila = inflater.inflate(idVistaElemento, parent, false);
         }
 
-        /*LayoutInflater inflater = contexto.getLayoutInflater();
-        View vistaFila = inflater.inflate(R.layout.item_lista_layout, null, true);*/
-
-
-
-        //Creación de la vista – TextView
+        /* Carga del nombre del contacto. */
         tvNombre = (TextView) vistaFila.findViewById(R.id.tvNombreItem);
         tvNombre.setText(alContactos.get(position).getNombre());
-        tvTelefono = (TextView) vistaFila.findViewById(R.id.tvTelefonoItem);
-        tvNombre.setText(alContactos.get(position).getTelefono());
 
-        //Creación de la vista – ImageView
+        /* Carga del teléfono del contacto. */
+        tvTelefono = (TextView) vistaFila.findViewById(R.id.tvTelefonoItem);
+        tvTelefono.setText(alContactos.get(position).getTelefono());
+
+        /* Carga de la imagen del contacto. */
         /*ImageView imagen = (ImageView) vistaFila.findViewById(R.id.imagen1);
         Drawable drawable = getContext().getResources().getDrawable(getContext().getResources().getIdentifier("@drawable/" + alContactos.get(position).getImagen(),null, getContext().getPackageName()));
         imagen.setImageDrawable(drawable);*/
-        //Devolución de la vista
-        return vistaFila;
+
+
+        return vistaFila; /* Devuelve la vista personalizada de la fila. */
     }
 }
