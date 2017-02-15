@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cargar(View v) {
-        pb1.setVisibility(View.VISIBLE);
         if (isOnline()) {
             new URLReaderTaskInner().execute("http://www.pirateking.es"); /* Ejecuta la AsyncTask con la URL proporcionada.
                 IMPORTANTE: para URLs es necesario poner el protocolo. */
