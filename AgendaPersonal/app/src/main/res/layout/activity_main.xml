@@ -11,8 +11,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:divider="@drawable/separador_vertical"
-        android:showDividers="middle"
         android:padding="10dp"
         android:id="@+id/llcabecera">
 
@@ -34,6 +32,14 @@
             android:textStyle="normal|bold"
             android:textSize="18sp"
             android:textAlignment="center" />
+
+        <ProgressBar
+            style="@android:style/Widget.Material.Light.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pbProgresoCarga"
+            android:layout_weight="1"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <ListView
