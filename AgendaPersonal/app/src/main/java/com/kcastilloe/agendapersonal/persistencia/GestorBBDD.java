@@ -26,12 +26,16 @@ public class GestorBBDD extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
                 "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text)";
+        /*
+        * String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
+                "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text, ruta_foto_contacto text)";
+        * */
         db.execSQL(CREATE_TABLA_CONTACTO);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists books");
+        db.execSQL("drop table if exists contacto");
         this.onCreate(db);
     }
 
@@ -107,6 +111,14 @@ public class GestorBBDD extends SQLiteOpenHelper {
         contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto);
         return contactoAlmacenado;
     }
+
+    public boolean eliminarTodosContactos() throws Exception {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.execSQL("delete from contacto");
+        return true;
+    }
+
 
     /* Sirve para eliminar un contacto de la BD según su ID. */
     public boolean eliminarContacto(int id){
