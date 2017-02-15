@@ -1,6 +1,7 @@
 package com.kcastilloe.agendapersonal;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nuevo_contacto);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); /* Fuerza la posición a vertical. */
         etNombreContacto = (EditText) findViewById(R.id.etNombreContacto);
         etTelefonoContacto = (EditText) findViewById(R.id.etTelefonoContacto);
         etDireccionContacto = (EditText) findViewById(R.id.etDireccionContacto);
