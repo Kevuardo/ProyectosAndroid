@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ListaPersonalizada extends ArrayAdapter<Contacto> {
 
     private ArrayList<Contacto> alContactos = new ArrayList();
-    private TextView tvNombre, tvTelefono;
+    private TextView tvNombre, tvTelefono, tvEmail;
     private int idVistaElemento = 0;
 
     public ListaPersonalizada(Context context, int idVistaElemento, ArrayList<Contacto> alContactos) {
@@ -42,6 +42,10 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
         /* Carga del teléfono del contacto. */
         tvTelefono = (TextView) vistaFila.findViewById(R.id.tvTelefonoItem);
         tvTelefono.setText(alContactos.get(position).getTelefono());
+
+        /* Carga del teléfono del contacto. */
+        tvEmail = (TextView) vistaFila.findViewById(R.id.tvEmailItem);
+        tvEmail.setText(alContactos.get(position).getEmail());
 
         /* Carga de la imagen del contacto. */
         /*ImageView imagen = (ImageView) vistaFila.findViewById(R.id.imagen1);
