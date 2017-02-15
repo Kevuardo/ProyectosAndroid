@@ -48,6 +48,8 @@ public class GestorBBDD extends SQLiteOpenHelper {
         db.insert("contacto", null, values);
         db.close();
         System.out.println("Contacto creado con éxito.");
+
+        /* PRUEBA. */
         alBusquedaContactos = listarContactos();
 
         for (int i = 0; i < alBusquedaContactos.size(); i++){
@@ -55,6 +57,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
                     ", nombre = " + alBusquedaContactos.get(i).getNombre() + ", telefono = " +  alBusquedaContactos.get(i).getTelefono() +
                     ", dirección = " +  alBusquedaContactos.get(i).getDireccion() + ", email = " +  alBusquedaContactos.get(i).getEmail() + ".");
         }
+        /* PRUEBA. */
     }
 
     /* Método usado para devolver los datos  de todos los contactos, y volcarlos en el ListView. */
@@ -71,6 +74,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from contacto", null);
         if (cursor.moveToFirst()) {
             do {
+                /* Recoge los contactos uno a uno, y los guarda en un ArrayList. */
                 idContactoAlmacenado = cursor.getInt(0);
                 nombreContactoAlmacenado = cursor.getString(1);
                 telefonoContactoAlmacenado = cursor.getString(2);
@@ -85,6 +89,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
     /* Método usado para devolver datos de un solo contacto, útil para ver el detalle de un único contacto. */
     public Contacto seleccionarContacto(int id) throws Exception {
+        int idContacto = id;
         String nombreContacto = null;
         String telefonoContacto = null;
         String direccionContacto = null;
@@ -94,11 +99,30 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("select * from contacto where id = ?", new String[] {String.valueOf(id)});
         cursor.moveToFirst();
+        idContacto = cursor.getInt(0);
         nombreContacto = cursor.getString(1);
-        direccionContacto = cursor.getString(2);
-        telefonoContacto = cursor.getString(3);
+        telefonoContacto = cursor.getString(2);
+        direccionContacto = cursor.getString(3);
         emailContacto = cursor.getString(4);
-        contactoAlmacenado = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto);
+        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto);
         return contactoAlmacenado;
+    }
+
+    /* Sirve para eliminar un contacto de la BD según su ID. */
+    public boolean eliminarContacto(int id){
+
+        return true;
+    }
+
+
+    /* Sirve para contar el número de contactos de la BD y volcarlos en el TextView de la cabecera del MainActivity. */
+    public int contarContactos() {
+        int contador = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select count(id_contacto) from contacto", null);
+        contador = cursor.getInt(0);
+
+        return contador;
     }
 }
