@@ -24,12 +24,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:id="@+id/llItemLista">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/llMuestraItem">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -42,7 +44,8 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:id="@+id/llDatosItem">
 
             <TextView
                 android:text="Nombre"
@@ -50,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvNombreItem"
                 android:textStyle="normal|bold"
-                android:textSize="18sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:text="Teléfono"
@@ -58,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvTelefonoItem"
                 android:textStyle="normal|bold"
-                android:textSize="18sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
