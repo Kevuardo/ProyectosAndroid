@@ -20,7 +20,8 @@
         android:layout_alignParentStart="true"
         android:id="@+id/btnGuardarContacto"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:onClick="crearNuevoContacto" />
+        android:onClick="crearNuevoContacto"
+        android:enabled="false" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -71,7 +72,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_call_black_48dp"
+        app:srcCompat="@drawable/ic_phone_black_24dp"
         android:layout_toStartOf="@+id/etNombreContacto"
         android:id="@+id/ivTelefono"
         android:layout_toLeftOf="@+id/etNombreContacto"
@@ -111,7 +112,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="phone"
         android:ems="10"
         android:id="@+id/etTelefonoContacto"
         android:hint="Teléfono"
@@ -146,7 +147,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/etEmailContacto"
         android:hint="E-mail"
