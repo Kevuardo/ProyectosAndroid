@@ -1,5 +1,6 @@
 package com.kcastilloe.agendapersonal;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,6 +57,8 @@ public class NuevoContactoActivity extends AppCompatActivity {
                         gbd.listarContactos();
                         t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
                         t.show();
+                        Intent intentCambio = new Intent(this, MainActivity.class);
+                        startActivity(intentCambio);
                     }
                 }
             }
