@@ -1,7 +1,10 @@
 package com.kcastilloe.agendapersonal;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); /* Fuerza la posición a vertical. */
         gbd = new GestorBBDD(this);
 
         tvCabeceraContador = (TextView) findViewById(R.id.tvCabeceraContador);
-        pbProgresoCarga = (ProgressBar) findViewById(R.id.pbProgresoCarga);
         lvListaContactos = (ListView) findViewById(R.id.lvListaContactos);
 
         lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,6 +98,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intentCambio);
                 return true;
             case R.id.action_ajustes:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("¿Estás seguro?");
+                    builder.setTitle("FORMATEAR");
+                    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                gbd.eliminarTodosContactos();
+                                Toast t;
+                                t = Toast.makeText(MainActivity.this, "Se han eliminado todos los registros.", Toast.LENGTH_LONG);
+                                t.show();
+                                rellenarLista();
+                            } catch (Exception e) {
+                                Toast t;
+                                t = Toast.makeText(MainActivity.this, "Imposible borrar los contactos.", Toast.LENGTH_LONG);
+                                t.show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -104,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Para rellenar la lista de contactos cada vez que se inicia la actividad. Contacta con la BD,
     recoge los datos necesarios, crea objetos Contacto para cada registro, y los muestra en los items.*/
-    public void rellenarLista() {
+    private void rellenarLista() {
         /* Se recogen los contactos en un ArrayList. */
 
         alContactos.clear(); /* Se vacía el Arraylist para segurarse. */
@@ -127,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Sirve para abrir la actividad necesaria para crear un nuevo contacto. */
-    public void crearContacto(View view){
+    private void crearContacto(View view){
         Intent intentCambio = new Intent(this, NuevoContactoActivity.class);
         startActivity(intentCambio);
 
