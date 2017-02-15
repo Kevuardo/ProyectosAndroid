@@ -71,7 +71,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
         alContactos.clear(); /* Primero nos aseguramos de que está vacío para evitar que se dupliquen los items en el ListView. */
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from contacto", null);
+        Cursor cursor = db.rawQuery("select * from contacto order by nombre_contacto", null); /* Se usa order by para ordenarlos alfabéticamente. */
         if (cursor.moveToFirst()) {
             do {
                 /* Recoge los contactos uno a uno, y los guarda en un ArrayList. */
