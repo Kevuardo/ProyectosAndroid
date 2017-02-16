@@ -93,43 +93,15 @@ public class MainActivity extends AppCompatActivity {
     /* Analiza cuándo se selecciona un item del ActionBar y la acción a realizar según el que se seleccione. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intentCambio;
         switch (item.getItemId()) {
             case R.id.action_buscar:
-                Intent intentCambio = new Intent(this, NuevoContactoActivity.class);
+                intentCambio= new Intent(this, NuevoContactoActivity.class);
                 startActivity(intentCambio);
                 return true;
             case R.id.action_ajustes:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("¿Estás seguro?");
-                builder.setTitle("FORMATEAR");
-                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            gbd.eliminarTodosContactos();
-                            Toast t;
-                            t = Toast.makeText(MainActivity.this, "Se han eliminado todos los registros.", Toast.LENGTH_LONG);
-                            t.show();
-                            rellenarLista();
-                            actualizarCabecera();
-                        } catch (Exception e) {
-                            Toast t;
-                            t = Toast.makeText(MainActivity.this, "Imposible borrar los contactos.", Toast.LENGTH_LONG);
-                            t.show();
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-
+                intentCambio = new Intent(this,DetalleContactoActivity.class);
+                startActivity(intentCambio);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
