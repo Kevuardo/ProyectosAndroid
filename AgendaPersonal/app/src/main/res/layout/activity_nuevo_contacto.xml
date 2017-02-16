@@ -20,8 +20,7 @@
         android:layout_alignParentStart="true"
         android:id="@+id/btnGuardarContacto"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:onClick="crearNuevoContacto"
-        android:enabled="false" />
+        android:onClick="crearNuevoContacto" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -35,136 +34,186 @@
         android:id="@+id/fabFoto"
         app:backgroundTint="@android:color/white" />
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_person_black_48dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/ivNombre"
-        android:layout_above="@+id/tvTelefonoContacto" />
+        android:id="@+id/llDatosContacto">
 
-    <TextView
-        android:text="Nombre del contacto:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvNombreContacto"
-        android:textStyle="normal|bold"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/ivNombre"
-        android:layout_toEndOf="@+id/ivNombre" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/llNombreContacto">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/etNombreContacto"
-        android:hint="Nombre"
-        android:textAllCaps="false"
-        android:layout_below="@+id/tvNombreContacto"
-        android:layout_alignLeft="@+id/tvTelefonoContacto"
-        android:layout_alignStart="@+id/tvTelefonoContacto"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_person_black_48dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/ivNombre"
+                android:layout_above="@+id/tvTelefonoContacto" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_phone_black_24dp"
-        android:layout_toStartOf="@+id/etNombreContacto"
-        android:id="@+id/ivTelefono"
-        android:layout_toLeftOf="@+id/etNombreContacto"
-        android:layout_alignBottom="@+id/etTelefonoContacto"
-        android:layout_below="@+id/ivNombre" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/llDetalleNombre">
 
-    <TextView
-        android:text="Teléfono del contacto:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvTelefonoContacto"
-        android:textStyle="normal|bold"
-        android:layout_below="@+id/etNombreContacto"
-        android:layout_toRightOf="@+id/ivNombre"
-        android:layout_toEndOf="@+id/ivNombre" />
+                <TextView
+                    android:text="Nombre del contacto:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvNombreContacto"
+                    android:textStyle="normal|bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/ivNombre"
+                    android:layout_toEndOf="@+id/ivNombre" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_location_on_black_48dp"
-        android:id="@+id/ivDireccion"
-        android:layout_below="@+id/ivTelefono"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/etDireccionContacto" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/etNombreContacto"
+                    android:hint="Nombre"
+                    android:textAllCaps="false"
+                    android:layout_below="@+id/tvNombreContacto"
+                    android:layout_alignLeft="@+id/tvTelefonoContacto"
+                    android:layout_alignStart="@+id/tvTelefonoContacto"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </LinearLayout>
+        </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_mail_outline_black_48dp"
-        android:id="@+id/ivEmail"
-        android:layout_below="@+id/ivDireccion"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/etEmailContacto" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/llTelefonoContacto">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/etTelefonoContacto"
-        android:hint="Teléfono"
-        android:layout_below="@+id/tvTelefonoContacto"
-        android:layout_toRightOf="@+id/ivTelefono"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_phone_black_24dp"
+                android:layout_toStartOf="@+id/etNombreContacto"
+                android:id="@+id/ivTelefono"
+                android:layout_toLeftOf="@+id/etNombreContacto"
+                android:layout_alignBottom="@+id/etTelefonoContacto"
+                android:layout_below="@+id/ivNombre" />
 
-    <TextView
-        android:text="Dirección del contacto:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvDireccion"
-        android:textStyle="normal|bold"
-        android:layout_below="@+id/etTelefonoContacto"
-        android:layout_toRightOf="@+id/ivTelefono"
-        android:layout_toEndOf="@+id/ivTelefono" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/llDetalleTelefono">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/etDireccionContacto"
-        android:hint="Dirección"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/etTelefonoContacto"
-        android:layout_toRightOf="@+id/ivDireccion"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+                <TextView
+                    android:text="Teléfono del contacto:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvTelefonoContacto"
+                    android:textStyle="normal|bold"
+                    android:layout_below="@+id/etNombreContacto"
+                    android:layout_toRightOf="@+id/ivNombre"
+                    android:layout_toEndOf="@+id/ivNombre" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/etEmailContacto"
-        android:hint="E-mail"
-        android:layout_marginTop="17dp"
-        android:layout_alignTop="@+id/tvEmailContacto"
-        android:layout_toRightOf="@+id/ivEmail"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/etTelefonoContacto"
+                    android:hint="Teléfono"
+                    android:layout_below="@+id/tvTelefonoContacto"
+                    android:layout_toRightOf="@+id/ivTelefono"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </LinearLayout>
+        </LinearLayout>
 
-    <TextView
-        android:text="E-mail del contacto:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvEmailContacto"
-        android:textStyle="normal|bold"
-        android:layout_below="@+id/ivDireccion"
-        android:layout_toRightOf="@+id/ivDireccion"
-        android:layout_toEndOf="@+id/ivDireccion" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/llDireccionContacto">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_location_on_black_48dp"
+                android:id="@+id/ivDireccion"
+                android:layout_below="@+id/ivTelefono"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/etDireccionContacto" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/llDetalleDireccion">
+
+                <TextView
+                    android:text="Dirección del contacto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDireccionContacto"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/etDireccionContacto"
+                    android:hint="Dirección" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/llEmailContacto">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_mail_outline_black_48dp"
+                android:id="@+id/ivEmail"
+                android:layout_below="@+id/ivDireccion"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/etEmailContacto" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/llDetalleEmail">
+
+                <TextView
+                    android:text="E-mail del contacto:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvNombreContacto"
+                    android:textStyle="normal|bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:ems="10"
+                    android:id="@+id/etEmailContacto"
+                    android:hint="E-mail" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
