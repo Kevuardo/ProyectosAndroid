@@ -55,12 +55,16 @@ public class NuevoContactoActivity extends AppCompatActivity {
                         t.show();
                     } else {
                         nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto);
-                        gbd.añadirContacto(nuevoContacto);
-                        gbd.listarContactos();
-                        t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
-                        t.show();
-                        Intent intentCambio = new Intent(this, MainActivity.class);
-                        startActivity(intentCambio);
+                        try {
+                            gbd.agregarContacto(nuevoContacto);
+                            gbd.listarContactos();
+                            t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
+                            t.show();
+                            Intent intentCambio = new Intent(this, MainActivity.class);
+                            startActivity(intentCambio);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

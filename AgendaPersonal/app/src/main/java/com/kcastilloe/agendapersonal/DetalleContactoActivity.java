@@ -2,6 +2,7 @@ package com.kcastilloe.agendapersonal;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
+import java.util.Random;
+
 public class DetalleContactoActivity extends AppCompatActivity {
 
     private Toolbar tbBarraImagen;
@@ -29,19 +32,21 @@ public class DetalleContactoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_contacto);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); /* Fuerza la posición a vertical. */
         etNombreContactoGuardado = (EditText) findViewById(R.id.etNombreContactoGuardado);
         etTelefonoContactoGuardado = (EditText) findViewById(R.id.etTelefonoContactoGuardado);
         etDireccionContactoGuardado = (EditText) findViewById(R.id.etDireccionContactoGuardado);
         etEmailContactoGuardado = (EditText) findViewById(R.id.etEmailContactoGuardado);
-        Intent intentApertura = getIntent();
-        idContacto = intentApertura.getIntExtra("id", 1);
-        gbd = new GestorBBDD(this);
-        //initInstancesDrawer();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Intent intentApertura = getIntent();
+        Random suerte = new Random();
+        suerte.nextInt(idContacto);
+        idContacto = intentApertura.getIntExtra("id", 1); /* Recoge el ID que le envía el Intent. */
+        gbd = new GestorBBDD(this);
         try {
             contactoGuardado = gbd.seleccionarContacto(idContacto);
             etNombreContactoGuardado.setText(contactoGuardado.getNombre());
@@ -107,14 +112,5 @@ public class DetalleContactoActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void initInstancesDrawer() {
-
-        tbBarraImagen = (Toolbar) findViewById(R.id.tbBarraImagen);
-        setSupportActionBar(tbBarraImagen);
-
-        ctblDisposicionToolbar = (CollapsingToolbarLayout) findViewById(R.id.ctblDisposicionToolbar);
-        ctblDisposicionToolbar.setTitle("Animated Toolbar");
     }
 }
