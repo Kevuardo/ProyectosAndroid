@@ -40,7 +40,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
     }
 
     /* Método para añadir contactos a la BD. El id no debe pasarse como parámetro porque es autoincremental. */
-    public void añadirContacto(Contacto nuevoContacto) {
+    public void agregarContacto(Contacto nuevoContacto) throws Exception {
         ArrayList<Contacto> alBusquedaContactos = new ArrayList();
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -52,20 +52,10 @@ public class GestorBBDD extends SQLiteOpenHelper {
         db.insert("contacto", null, values);
         db.close();
         System.out.println("Contacto creado con éxito.");
-
-        /* PRUEBA. */
-        alBusquedaContactos = listarContactos();
-
-        for (int i = 0; i < alBusquedaContactos.size(); i++) {
-            System.out.println("\nRegistro " + (i + 1) + ": id =  " + alBusquedaContactos.get(i).getId() +
-                    ", nombre = " + alBusquedaContactos.get(i).getNombre() + ", telefono = " + alBusquedaContactos.get(i).getTelefono() +
-                    ", dirección = " + alBusquedaContactos.get(i).getDireccion() + ", email = " + alBusquedaContactos.get(i).getEmail() + ".");
-        }
-        /* PRUEBA. */
     }
 
     /* Método usado para devolver los datos  de todos los contactos, y volcarlos en el ListView. */
-    public ArrayList listarContactos() {
+    public ArrayList listarContactos() throws Exception {
         int idContactoAlmacenado = 0;
         String nombreContactoAlmacenado = null;
         String telefonoContactoAlmacenado = null;
@@ -93,7 +83,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
     /* Método usado para devolver datos de un solo contacto, útil para ver el detalle de un único contacto. */
     public Contacto seleccionarContacto(int id) throws Exception {
-        int idContacto = id;
+        int idContacto = 0;
         String nombreContacto = null;
         String telefonoContacto = null;
         String direccionContacto = null;
@@ -101,8 +91,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         Contacto contactoAlmacenado;
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "select * from contacto where id = " + idContacto;
-        Cursor cursor = db.rawQuery(sql, null);
+        Cursor cursor = db.rawQuery("select * from contacto where id_contacto = ?", new String[]{String.valueOf(id)});
         cursor.moveToFirst();
         idContacto = cursor.getInt(0);
         nombreContacto = cursor.getString(1);
