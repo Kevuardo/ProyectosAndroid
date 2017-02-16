@@ -56,16 +56,16 @@ public class GestorBBDD extends SQLiteOpenHelper {
         /* PRUEBA. */
         alBusquedaContactos = listarContactos();
 
-        for (int i = 0; i < alBusquedaContactos.size(); i++){
+        for (int i = 0; i < alBusquedaContactos.size(); i++) {
             System.out.println("\nRegistro " + (i + 1) + ": id =  " + alBusquedaContactos.get(i).getId() +
-                    ", nombre = " + alBusquedaContactos.get(i).getNombre() + ", telefono = " +  alBusquedaContactos.get(i).getTelefono() +
-                    ", dirección = " +  alBusquedaContactos.get(i).getDireccion() + ", email = " +  alBusquedaContactos.get(i).getEmail() + ".");
+                    ", nombre = " + alBusquedaContactos.get(i).getNombre() + ", telefono = " + alBusquedaContactos.get(i).getTelefono() +
+                    ", dirección = " + alBusquedaContactos.get(i).getDireccion() + ", email = " + alBusquedaContactos.get(i).getEmail() + ".");
         }
         /* PRUEBA. */
     }
 
     /* Método usado para devolver los datos  de todos los contactos, y volcarlos en el ListView. */
-    public ArrayList listarContactos(){
+    public ArrayList listarContactos() {
         int idContactoAlmacenado = 0;
         String nombreContactoAlmacenado = null;
         String telefonoContactoAlmacenado = null;
@@ -101,7 +101,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         Contacto contactoAlmacenado;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("select * from contacto where id = ?", new String[] {String.valueOf(id)});
+        Cursor cursor = db.rawQuery("select * from contacto where id = ?", new String[]{String.valueOf(id)});
         cursor.moveToFirst();
         idContacto = cursor.getInt(0);
         nombreContacto = cursor.getString(1);
@@ -121,7 +121,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
 
     /* Sirve para eliminar un contacto de la BD según su ID. */
-    public boolean eliminarContacto(int id){
+    public boolean eliminarContacto(int id) {
 
         return true;
     }
@@ -130,11 +130,38 @@ public class GestorBBDD extends SQLiteOpenHelper {
     /* Sirve para contar el número de contactos de la BD y volcarlos en el TextView de la cabecera del MainActivity. */
     public int contarContactos() {
         int contador = 0;
+        int idContactoAlmacenado = 0;
+        String nombreContactoAlmacenado = null;
+        String telefonoContactoAlmacenado = null;
+        String direccionContactoAlmacenado = null;
+        String emailContactoAlmacenado = null;
+        Contacto contactoAlmacenado;
+
+        alContactos.clear(); /* Primero nos aseguramos de que está vacío para evitar que se dupliquen los items en el ListView. */
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from contacto", null); /* Se usa order by para ordenarlos alfabéticamente. */
+        if (cursor.moveToFirst()) {
+            do {
+                /* Recoge los contactos uno a uno, y los guarda en un ArrayList. */
+                idContactoAlmacenado = cursor.getInt(0);
+                nombreContactoAlmacenado = cursor.getString(1);
+                telefonoContactoAlmacenado = cursor.getString(2);
+                direccionContactoAlmacenado = cursor.getString(3);
+                emailContactoAlmacenado = cursor.getString(4);
+                contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado);
+                alContactos.add(contactoAlmacenado);
+            } while (cursor.moveToNext());
+        }
 
-        Cursor cursor = db.rawQuery("select count(id_contacto) from contacto", null);
-        contador = cursor.getInt(0);
 
+        for (int i = 0; i < alContactos.size(); i++) {
+            System.out.println("\nRegistro " + (i + 1) + ": id =  " + alContactos.get(i).getId() +
+                    ", nombre = " + alContactos.get(i).getNombre() + ", telefono = " + alContactos.get(i).getTelefono() +
+                    ", dirección = " + alContactos.get(i).getDireccion() + ", email = " + alContactos.get(i).getEmail() + ".");
+        }
+
+        contador = cursor.getCount();
+        System.out.println(contador);
         return contador;
     }
 }

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int posicion, long id) {
-                String telefono = ((Contacto)av.getAdapter().getItem(posicion)).getTelefono();
+                String telefono = ((Contacto) av.getAdapter().getItem(posicion)).getTelefono();
                 System.out.println(telefono);
             }
         });
@@ -77,14 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
     /* Este método es llamado cuando la actividad pasa a primer plano, incluyendo el inicio de la app. */
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         rellenarLista();
+        actualizarCabecera();
     }
 
     /* Cuando se cree el menú será con esta disposición. */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -98,39 +99,49 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intentCambio);
                 return true;
             case R.id.action_ajustes:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("¿Estás seguro?");
-                    builder.setTitle("FORMATEAR");
-                    builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                gbd.eliminarTodosContactos();
-                                Toast t;
-                                t = Toast.makeText(MainActivity.this, "Se han eliminado todos los registros.", Toast.LENGTH_LONG);
-                                t.show();
-                                rellenarLista();
-                            } catch (Exception e) {
-                                Toast t;
-                                t = Toast.makeText(MainActivity.this, "Imposible borrar los contactos.", Toast.LENGTH_LONG);
-                                t.show();
-                                e.printStackTrace();
-                            }
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("¿Estás seguro?");
+                builder.setTitle("FORMATEAR");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            gbd.eliminarTodosContactos();
+                            Toast t;
+                            t = Toast.makeText(MainActivity.this, "Se han eliminado todos los registros.", Toast.LENGTH_LONG);
+                            t.show();
+                            rellenarLista();
+                            actualizarCabecera();
+                        } catch (Exception e) {
+                            Toast t;
+                            t = Toast.makeText(MainActivity.this, "Imposible borrar los contactos.", Toast.LENGTH_LONG);
+                            t.show();
+                            e.printStackTrace();
                         }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void actualizarCabecera(){
+        int contador = gbd.contarContactos();
+        if (contador == 1) {
+            tvCabeceraContador.setText(contador + " contacto");
+        } else {
+            tvCabeceraContador.setText(contador + " contactos");
         }
     }
 
@@ -159,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Sirve para abrir la actividad necesaria para crear un nuevo contacto. */
-    private void crearContacto(View view){
+    private void crearContacto(View view) {
         Intent intentCambio = new Intent(this, NuevoContactoActivity.class);
         startActivity(intentCambio);
 

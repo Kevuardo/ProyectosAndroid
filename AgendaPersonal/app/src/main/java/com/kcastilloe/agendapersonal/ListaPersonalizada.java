@@ -31,7 +31,7 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vistaFila = convertView;
         if (vistaFila == null) {
-            LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vistaFila = inflater.inflate(idVistaElemento, parent, false);
         }
 
