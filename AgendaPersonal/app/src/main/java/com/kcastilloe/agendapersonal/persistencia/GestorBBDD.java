@@ -99,9 +99,10 @@ public class GestorBBDD extends SQLiteOpenHelper {
         String direccionContacto = null;
         String emailContacto = null;
         Contacto contactoAlmacenado;
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("select * from contacto where id = ?", new String[]{String.valueOf(id)});
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "select * from contacto where id = " + idContacto;
+        Cursor cursor = db.rawQuery(sql, null);
         cursor.moveToFirst();
         idContacto = cursor.getInt(0);
         nombreContacto = cursor.getString(1);

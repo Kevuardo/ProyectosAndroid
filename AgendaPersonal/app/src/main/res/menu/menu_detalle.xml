@@ -18,10 +18,10 @@
         android:title="Eliminar contacto"
         app:showAsAction="always"/>
 
-    <!-- Ubicar contacto. -->
+    <!-- Editar contacto. -->
     <item
-        android:id="@+id/action_ubicar"
-        android:icon="@drawable/ic_map_black_48dp"
-        android:title="Ubicar contacto"
+        android:id="@+id/action_editar"
+        android:icon="@drawable/ic_edit_black_48dp"
+        android:title="Editar contacto"
         app:showAsAction="always"/>
 </menu>

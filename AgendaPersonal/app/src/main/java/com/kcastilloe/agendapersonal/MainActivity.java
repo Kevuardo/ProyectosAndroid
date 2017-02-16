@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_ajustes:
                 intentCambio = new Intent(this,DetalleContactoActivity.class);
+                intentCambio.putExtra("id", 1);
                 startActivity(intentCambio);
                 return true;
             default:
