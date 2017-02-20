@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 
 public class GestorBBDD extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1; /* La versión de la BD. */
+    private static final int DATABASE_VERSION = 2; /* La versión de la BD. */
     private static final String DATABASE_NAME = "DBAgenda"; /* El nombre de la BD. */
     private static final String[] COLUMNAS = {"id_contacto", "nombre_contacto", "telefono_contacto", "direccion_contacto", "email_contacto"};
     private ArrayList<Contacto> alContactos = new ArrayList();
@@ -24,12 +23,10 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        /*String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
+                "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text)";*/
         String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
-                "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text)";
-        /*
-        * String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
-                "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text, ruta_foto_contacto text)";
-        * */
+                "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text, foto_contacto blob)";
         db.execSQL(CREATE_TABLA_CONTACTO);
     }
 
@@ -49,6 +46,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         values.put("telefono_contacto", nuevoContacto.getTelefono());
         values.put("direccion_contacto", nuevoContacto.getDireccion());
         values.put("email_contacto", nuevoContacto.getEmail());
+        values.put("foto_contacto", nuevoContacto.getFoto());
         db.insert("contacto", null, values);
         db.close();
         System.out.println("Contacto creado con éxito.");
@@ -61,6 +59,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         String telefonoContactoAlmacenado = null;
         String direccionContactoAlmacenado = null;
         String emailContactoAlmacenado = null;
+        byte[] fotoContactoAlmacenado;
         Contacto contactoAlmacenado;
 
         alContactos.clear(); /* Primero nos aseguramos de que está vacío para evitar que se dupliquen los items en el ListView. */
@@ -74,7 +73,8 @@ public class GestorBBDD extends SQLiteOpenHelper {
                 telefonoContactoAlmacenado = cursor.getString(2);
                 direccionContactoAlmacenado = cursor.getString(3);
                 emailContactoAlmacenado = cursor.getString(4);
-                contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado);
+                fotoContactoAlmacenado = cursor.getBlob(5);
+                contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado, fotoContactoAlmacenado);
                 alContactos.add(contactoAlmacenado);
             } while (cursor.moveToNext());
         }
@@ -88,6 +88,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         String telefonoContacto = null;
         String direccionContacto = null;
         String emailContacto = null;
+        byte[] fotoContacto = new byte[0];
         Contacto contactoAlmacenado;
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -98,7 +99,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         telefonoContacto = cursor.getString(2);
         direccionContacto = cursor.getString(3);
         emailContacto = cursor.getString(4);
-        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto);
+        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
         return contactoAlmacenado;
     }
 
@@ -109,13 +110,13 @@ public class GestorBBDD extends SQLiteOpenHelper {
         return true;
     }
 
-
     /* Sirve para eliminar un contacto de la BD según su ID. */
     public boolean eliminarContacto(int id) {
-
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.execSQL("delete from contacto where id = ?");
         return true;
     }
-
 
     /* Sirve para contar el número de contactos de la BD y volcarlos en el TextView de la cabecera del MainActivity. */
     public int contarContactos() {
@@ -125,6 +126,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         String telefonoContactoAlmacenado = null;
         String direccionContactoAlmacenado = null;
         String emailContactoAlmacenado = null;
+        byte[] fotoContactoAlmacenado = new byte[0];
         Contacto contactoAlmacenado;
 
         alContactos.clear(); /* Primero nos aseguramos de que está vacío para evitar que se dupliquen los items en el ListView. */
@@ -138,7 +140,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
                 telefonoContactoAlmacenado = cursor.getString(2);
                 direccionContactoAlmacenado = cursor.getString(3);
                 emailContactoAlmacenado = cursor.getString(4);
-                contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado);
+                contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado, fotoContactoAlmacenado);
                 alContactos.add(contactoAlmacenado);
             } while (cursor.moveToNext());
         }
