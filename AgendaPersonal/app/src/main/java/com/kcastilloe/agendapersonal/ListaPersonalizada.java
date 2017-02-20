@@ -2,6 +2,8 @@ package com.kcastilloe.agendapersonal;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,14 @@ import android.widget.TextView;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 public class ListaPersonalizada extends ArrayAdapter<Contacto> {
 
     private ArrayList<Contacto> alContactos = new ArrayList();
     private TextView tvNombre, tvTelefono, tvEmail;
+    private ImageView ivImagen;
     private int idVistaElemento = 0;
 
     public ListaPersonalizada(Context context, int idVistaElemento, ArrayList<Contacto> alContactos) {
@@ -48,10 +52,11 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
         tvEmail.setText(alContactos.get(position).getEmail());
 
         /* Carga de la imagen del contacto. */
-        /*ImageView imagen = (ImageView) vistaFila.findViewById(R.id.imagen1);
-        Drawable drawable = getContext().getResources().getDrawable(getContext().getResources().getIdentifier("@drawable/" + alContactos.get(position).getImagen(),null, getContext().getPackageName()));
-        imagen.setImageDrawable(drawable);*/
-
+        ivImagen = (ImageView) vistaFila.findViewById(R.id.ivImagenItem);
+        byte[] bytesFoto = alContactos.get(position).getFoto();
+        ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
+        Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
+        ivImagen.setImageBitmap(imagenContacto);
 
         return vistaFila; /* Devuelve la vista personalizada de la fila. */
     }
