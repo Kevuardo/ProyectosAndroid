@@ -3,21 +3,23 @@ package com.kcastilloe.agendapersonal;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
-import java.util.Random;
+import java.io.ByteArrayInputStream;
 
 public class DetalleContactoActivity extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
     private CollapsingToolbarLayout ctblDisposicionToolbar;
     private GestorBBDD gbd;
     private EditText etNombreContactoGuardado, etTelefonoContactoGuardado, etDireccionContactoGuardado,etEmailContactoGuardado;
+    private ImageView ivContactoAlmacenado;
     private Contacto contactoGuardado;
     private int idContacto = 0;
 
@@ -37,22 +40,26 @@ public class DetalleContactoActivity extends AppCompatActivity {
         etTelefonoContactoGuardado = (EditText) findViewById(R.id.etTelefonoContactoGuardado);
         etDireccionContactoGuardado = (EditText) findViewById(R.id.etDireccionContactoGuardado);
         etEmailContactoGuardado = (EditText) findViewById(R.id.etEmailContactoGuardado);
+        ivContactoAlmacenado = (ImageView) findViewById(R.id.ivContactoAlmacenado);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Intent intentApertura = getIntent();
-//        Random suerte = new Random();
-//        suerte.nextInt(idContacto);
         idContacto = intentApertura.getIntExtra("id", 1); /* Recoge el ID que le envía el Intent. */
         gbd = new GestorBBDD(this);
         try {
-            contactoGuardado = gbd.seleccionarContacto(3);
+            contactoGuardado = gbd.seleccionarContacto(1);
             etNombreContactoGuardado.setText(contactoGuardado.getNombre());
             etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
             etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
             etEmailContactoGuardado.setText(contactoGuardado.getEmail());
+
+            byte[] bytesFoto = contactoGuardado.getFoto();
+            ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
+            Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
+            ivContactoAlmacenado.setImageBitmap(imagenContacto);
         } catch (Exception e) {
             Toast t;
             t = Toast.makeText(DetalleContactoActivity.this, "No se ha podido acceder al contacto.", Toast.LENGTH_LONG);
@@ -84,6 +91,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
+                            gbd.eliminarContacto(contactoGuardado.getId());
                             finish(); /* Mata la Activity*/
                             Toast t;
                             t = Toast.makeText(DetalleContactoActivity.this, "Se ha eliminado correctamente el contacto.", Toast.LENGTH_LONG);
