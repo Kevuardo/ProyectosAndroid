@@ -2,10 +2,14 @@ package com.kcastilloe.agendapersonal;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
@@ -13,10 +17,9 @@ import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
 public class NuevoContactoActivity extends AppCompatActivity {
 
-    private EditText etNombreContacto;
-    private EditText etTelefonoContacto;
-    private EditText etDireccionContacto;
-    private EditText etEmailContacto;
+    private EditText etNombreContacto, etTelefonoContacto, etDireccionContacto, etEmailContacto;
+    private ImageView ivImagenContacto;
+    private FloatingActionButton fabFoto;
     private Contacto nuevoContacto;
     private GestorBBDD gbd = new GestorBBDD(this);
 
@@ -29,6 +32,24 @@ public class NuevoContactoActivity extends AppCompatActivity {
         etTelefonoContacto = (EditText) findViewById(R.id.etTelefonoContacto);
         etDireccionContacto = (EditText) findViewById(R.id.etDireccionContacto);
         etEmailContacto = (EditText) findViewById(R.id.etEmailContacto);
+        ivImagenContacto = (ImageView) findViewById(R.id.ivImagenContacto);
+        fabFoto = (FloatingActionButton) findViewById(R.id.fabFoto);
+
+        fabFoto.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                   startActivityForResult(intentCamara, 0);
+               }
+           }
+        );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ivImagenContacto.setImageBitmap(bitmap);
     }
 
     public void crearNuevoContacto(View view) {
@@ -36,6 +57,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
         String telefonoContacto = etTelefonoContacto.getText().toString();
         String direccionContacto = etDireccionContacto.getText().toString();
         String emailContacto = etEmailContacto.getText().toString();
+        byte[] fotoContacto = new byte[0];
         Toast t;
 
         if (nombreContacto.compareToIgnoreCase("") == 0) {
@@ -53,8 +75,13 @@ public class NuevoContactoActivity extends AppCompatActivity {
                     if (emailContacto.compareToIgnoreCase("") == 0) {
                         t = Toast.makeText(this, "Introduzca un e-mail, por favor.", Toast.LENGTH_LONG);
                         t.show();
-                    } else {
-                        nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto);
+//                    } else {
+//                        if (ivImagenContacto.getDrawable() == ) {
+//
+//                        }
+
+                    }else{
+                        nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
                         try {
                             gbd.agregarContacto(nuevoContacto);
                             gbd.listarContactos();
