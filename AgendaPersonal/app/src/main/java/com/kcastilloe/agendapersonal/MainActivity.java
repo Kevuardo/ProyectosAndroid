@@ -93,11 +93,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void actualizarCabecera() {
-        int contador = gbd.contarContactos();
-        if (contador == 1) {
-            tvCabeceraContador.setText(contador + " contacto");
-        } else {
-            tvCabeceraContador.setText(contador + " contactos");
+        int contador = 0;
+        try {
+            contador = gbd.contarContactos();
+            if (contador == 1) {
+                tvCabeceraContador.setText(contador + " contacto");
+            } else {
+                tvCabeceraContador.setText(contador + " contactos");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
