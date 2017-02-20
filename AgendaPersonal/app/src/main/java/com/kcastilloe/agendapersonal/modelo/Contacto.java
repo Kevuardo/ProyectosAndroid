@@ -1,7 +1,5 @@
 package com.kcastilloe.agendapersonal.modelo;
 
-import android.location.Location;
-
 public class Contacto {
 
     private int id = 0;
@@ -9,25 +7,27 @@ public class Contacto {
     private String telefono = null;
     private String direccion = null;
     private String email = null;
+    private byte[] foto;
 
+/* Constructor sin id (para la inserción en la BD). */
 
-    /* Constructor sin id (para la inserción en la BD). */
-
-    public Contacto(String nombre,  String telefono, String direccion, String email) {
+    public Contacto(String nombre,  String telefono, String direccion, String email, byte[] foto) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.email = email;
+        this.foto = foto;
     }
 
     /* Constructor con id (para la recuperación de datos en la BD y posterior muestra en el ListView). */
 
-    public Contacto(int id, String nombre, String telefono, String direccion, String email) {
+    public Contacto(int id, String nombre, String telefono, String direccion, String email, byte[] foto) {
         this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.email = email;
+        this.foto = foto;
     }
 
     /* Getters y Setters. */
@@ -70,5 +70,13 @@ public class Contacto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 }
