@@ -43,12 +43,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent intentApertura = getIntent();
-        Random suerte = new Random();
-        suerte.nextInt(idContacto);
+//        Random suerte = new Random();
+//        suerte.nextInt(idContacto);
         idContacto = intentApertura.getIntExtra("id", 1); /* Recoge el ID que le envía el Intent. */
         gbd = new GestorBBDD(this);
         try {
-            contactoGuardado = gbd.seleccionarContacto(idContacto);
+            contactoGuardado = gbd.seleccionarContacto(3);
             etNombreContactoGuardado.setText(contactoGuardado.getNombre());
             etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
             etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
