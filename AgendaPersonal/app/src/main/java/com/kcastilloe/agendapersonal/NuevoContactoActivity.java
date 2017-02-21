@@ -80,7 +80,8 @@ public class NuevoContactoActivity extends AppCompatActivity {
 //
 //                        }
 
-                    }else{
+                    } else {
+                        ivImagenContacto.getDrawable()
                         nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
                         try {
                             gbd.agregarContacto(nuevoContacto);

@@ -140,6 +140,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
                 telefonoContactoAlmacenado = cursor.getString(2);
                 direccionContactoAlmacenado = cursor.getString(3);
                 emailContactoAlmacenado = cursor.getString(4);
+                fotoContactoAlmacenado = cursor.getBlob(5);
                 contactoAlmacenado = new Contacto(idContactoAlmacenado, nombreContactoAlmacenado, telefonoContactoAlmacenado, direccionContactoAlmacenado, emailContactoAlmacenado, fotoContactoAlmacenado);
                 alContactos.add(contactoAlmacenado);
             } while (cursor.moveToNext());
@@ -149,7 +150,8 @@ public class GestorBBDD extends SQLiteOpenHelper {
         for (int i = 0; i < alContactos.size(); i++) {
             System.out.println("\nRegistro " + (i + 1) + ": id =  " + alContactos.get(i).getId() +
                     ", nombre = " + alContactos.get(i).getNombre() + ", telefono = " + alContactos.get(i).getTelefono() +
-                    ", dirección = " + alContactos.get(i).getDireccion() + ", email = " + alContactos.get(i).getEmail() + ".");
+                    ", dirección = " + alContactos.get(i).getDireccion() + ", email = " + alContactos.get(i).getEmail() +
+                    ", foto = " +  alContactos.get(i).getFoto() + ".");
         }
 
         contador = cursor.getCount();

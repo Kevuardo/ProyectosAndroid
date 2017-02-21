@@ -48,7 +48,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
         idContacto = intentApertura.getIntExtra("id", 1); /* Recoge el ID que le envía el Intent. */
         gbd = new GestorBBDD(this);
         try {
-            contactoGuardado = gbd.seleccionarContacto(3);
+            contactoGuardado = gbd.seleccionarContacto(idContacto);
             etNombreContactoGuardado.setText(contactoGuardado.getNombre());
             etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
             etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
