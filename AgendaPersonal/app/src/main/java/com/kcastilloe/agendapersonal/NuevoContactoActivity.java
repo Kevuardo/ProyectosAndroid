@@ -90,8 +90,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
                             gbd.listarContactos();
                             t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
                             t.show();
-                            Intent intentCambio = new Intent(this, MainActivity.class);
-                            startActivity(intentCambio);
+                            finish();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

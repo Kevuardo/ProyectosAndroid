@@ -51,7 +51,6 @@ public class DetalleContactoActivity extends AppCompatActivity {
         gbd = new GestorBBDD(this);
         try {
             contactoGuardado = gbd.seleccionarContacto(idContacto);
-            contactoGuardado = gbd.seleccionarContacto(1);
             etNombreContactoGuardado.setText(contactoGuardado.getNombre());
             etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
             etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
@@ -78,11 +77,9 @@ public class DetalleContactoActivity extends AppCompatActivity {
     /* Analiza cuándo se selecciona un item del ActionBar y la acción a realizar según el que se seleccione. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast t;
         switch (item.getItemId()) {
             case R.id.action_compartir:
-                t = Toast.makeText(DetalleContactoActivity.this, "Compartir contacto.", Toast.LENGTH_LONG);
-                t.show();
+                Toast.makeText(DetalleContactoActivity.this, "Compartir contacto.", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_eliminar:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -94,13 +91,9 @@ public class DetalleContactoActivity extends AppCompatActivity {
                         try {
                             gbd.eliminarContacto(contactoGuardado.getId());
                             finish(); /* Mata la Activity. */
-                            Toast t;
-                            t = Toast.makeText(DetalleContactoActivity.this, "Se ha eliminado correctamente el contacto.", Toast.LENGTH_LONG);
-                            t.show();
+                            Toast.makeText(DetalleContactoActivity.this, "Se ha eliminado correctamente el contacto.", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
-                            Toast t;
-                            t = Toast.makeText(DetalleContactoActivity.this, "Imposible borrar el contacto.", Toast.LENGTH_LONG);
-                            t.show();
+                            Toast.makeText(DetalleContactoActivity.this, "Imposible borrar el contacto.", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -115,8 +108,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
                 dialog.show();
                 return true;
             case R.id.action_editar:
-                t = Toast.makeText(DetalleContactoActivity.this, "Editar contacto.", Toast.LENGTH_LONG);
-                t.show();
+                Toast.makeText(DetalleContactoActivity.this, "Editar contacto.", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

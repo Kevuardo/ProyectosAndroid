@@ -221,6 +221,7 @@
     app:backgroundTint="@android:color/white"
         android:layout_above="@+id/btnGuardarContacto"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        app:elevation="1dp" />
 
 </RelativeLayout>

@@ -58,6 +58,8 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
         Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
         ivImagen.setImageBitmap(imagenContacto);
 
+
+
         return vistaFila; /* Devuelve la vista personalizada de la fila. */
     }
 }
