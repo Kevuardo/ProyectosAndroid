@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
@@ -37,21 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         tvCabeceraContador = (TextView) findViewById(R.id.tvCabeceraContador);
         lvListaContactos = (ListView) findViewById(R.id.lvListaContactos);
-        lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto.*/
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    contactoAlmacenado = alContactos.get(position);
-                    intentCambio = new Intent(MainActivity.this, DetalleContactoActivity.class);
-                    intentCambio.putExtra("id", contactoAlmacenado.getId());
-                    startActivity(intentCambio);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /* Este método es llamado cuando la actividad pasa a primer plano, incluyendo el inicio de la app. */
@@ -74,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_agregar:
-                crearContacto();
                 return true;
             case R.id.action_ajustes:
                 try {
@@ -92,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Sirve para contar*/
     private void actualizarCabecera() {
         int contador = 0;
         try {
@@ -111,23 +97,47 @@ public class MainActivity extends AppCompatActivity {
     private void rellenarLista() {
         /* Se recogen los contactos en un ArrayList. */
 
-        alContactos.clear(); /* Se vacía el Arraylist para segurarse. */
+        alContactos.clear(); /* Se vacía el Arraylist para asegurarse. */
         try {
             alContactos = gbd.listarContactos();
             adaptadorLista = new ListaPersonalizada(MainActivity.this, R.layout.item_lista_layout, alContactos);
             lvListaContactos.setAdapter(adaptadorLista);
+
+            lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto.*/
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        contactoAlmacenado = alContactos.get(position);
+                        intentCambio = new Intent(MainActivity.this, DetalleContactoActivity.class);
+                        intentCambio.putExtra("id", contactoAlmacenado.getId());
+                        startActivity(intentCambio);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            lvListaContactos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        Toast.makeText(MainActivity.this, "Pulsación larga en " + position, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /* Sirve para abrir la actividad necesaria para crear un nuevo contacto. */
-    private void crearContacto() {
+    public void crearContacto(View view) {
         Intent intentCambio = new Intent(this, NuevoContactoActivity.class);
         startActivity(intentCambio);
-
-        /* NOTA: PREGUNTAR A ALGUIEN QUE SEPA SI SE PUEDE EVALUAR CÓMO SE CIERRA UNA ACTIVIDAD,
-        * PARA SABER SI SE PUEDE EVALUAR SI EL USUARIO LA CIERRA DANDO HACIA ATRÁS O GUARDANDO CONTACTO. */
     }
 
     /* Método para llamar al contacto seleccionado. */
