@@ -77,8 +77,8 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/esquinas_redondas"
-            android:drawableTop="@drawable/ic_call_black_48dp" />
+            android:text="Llamar"
+            android:background="@color/colorAccent" />
 
     </LinearLayout>
 
