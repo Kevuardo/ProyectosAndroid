@@ -38,8 +38,6 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
     /* Método para añadir contactos a la BD. El id no debe pasarse como parámetro porque es autoincremental. */
     public void agregarContacto(Contacto nuevoContacto) throws Exception {
-        ArrayList<Contacto> alBusquedaContactos = new ArrayList();
-
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("nombre_contacto", nuevoContacto.getNombre());
@@ -99,6 +97,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         telefonoContacto = cursor.getString(2);
         direccionContacto = cursor.getString(3);
         emailContacto = cursor.getString(4);
+        fotoContacto = cursor.getBlob(5);
         contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
         return contactoAlmacenado;
     }
@@ -111,15 +110,15 @@ public class GestorBBDD extends SQLiteOpenHelper {
     }
 
     /* Sirve para eliminar un contacto de la BD según su ID. */
-    public boolean eliminarContacto(int id) {
+    public boolean eliminarContacto(int id) throws Exception {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        db.execSQL("delete from contacto where id = ?");
+        db.delete("contacto", "id_contacto = ?", new String[]{String.valueOf(id)});
         return true;
     }
 
     /* Sirve para contar el número de contactos de la BD y volcarlos en el TextView de la cabecera del MainActivity. */
-    public int contarContactos() {
+    public int contarContactos() throws Exception {
         int contador = 0;
         int idContactoAlmacenado = 0;
         String nombreContactoAlmacenado = null;
@@ -146,7 +145,6 @@ public class GestorBBDD extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-
         for (int i = 0; i < alContactos.size(); i++) {
             System.out.println("\nRegistro " + (i + 1) + ": id =  " + alContactos.get(i).getId() +
                     ", nombre = " + alContactos.get(i).getNombre() + ", telefono = " + alContactos.get(i).getTelefono() +
@@ -155,7 +153,6 @@ public class GestorBBDD extends SQLiteOpenHelper {
         }
 
         contador = cursor.getCount();
-        System.out.println(contador);
         return contador;
     }
 }

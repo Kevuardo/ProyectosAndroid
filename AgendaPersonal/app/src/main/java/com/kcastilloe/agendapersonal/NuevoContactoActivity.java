@@ -3,6 +3,7 @@ package com.kcastilloe.agendapersonal;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 public class NuevoContactoActivity extends AppCompatActivity {
 
@@ -75,13 +79,11 @@ public class NuevoContactoActivity extends AppCompatActivity {
                     if (emailContacto.compareToIgnoreCase("") == 0) {
                         t = Toast.makeText(this, "Introduzca un e-mail, por favor.", Toast.LENGTH_LONG);
                         t.show();
-//                    } else {
-//                        if (ivImagenContacto.getDrawable() == ) {
-//
-//                        }
-
                     } else {
-                        ivImagenContacto.getDrawable()
+                        Bitmap bitmap = ((BitmapDrawable) ivImagenContacto.getDrawable()).getBitmap();
+                        ByteArrayOutputStream bytesEscritura = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytesEscritura);
+                        fotoContacto = bytesEscritura.toByteArray();
                         nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
                         try {
                             gbd.agregarContacto(nuevoContacto);
