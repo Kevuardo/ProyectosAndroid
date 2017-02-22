@@ -23,8 +23,6 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        /*String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
-                "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text)";*/
         String CREATE_TABLA_CONTACTO = "create table contacto (id_contacto integer primary key autoincrement, " +
                 "nombre_contacto text, telefono_contacto text, direccion_contacto text, email_contacto text, foto_contacto blob)";
         db.execSQL(CREATE_TABLA_CONTACTO);
@@ -47,7 +45,6 @@ public class GestorBBDD extends SQLiteOpenHelper {
         values.put("foto_contacto", nuevoContacto.getFoto());
         db.insert("contacto", null, values);
         db.close();
-        System.out.println("Contacto creado con éxito.");
     }
 
     /* Método usado para devolver los datos  de todos los contactos, y volcarlos en el ListView. */
@@ -76,6 +73,8 @@ public class GestorBBDD extends SQLiteOpenHelper {
                 alContactos.add(contactoAlmacenado);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        db.close();
         return alContactos;
     }
 
@@ -99,6 +98,8 @@ public class GestorBBDD extends SQLiteOpenHelper {
         emailContacto = cursor.getString(4);
         fotoContacto = cursor.getBlob(5);
         contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
+        cursor.close();
+        db.close();
         return contactoAlmacenado;
     }
 
@@ -106,6 +107,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         db.execSQL("delete from contacto");
+        db.close();
         return true;
     }
 
@@ -114,6 +116,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         db.delete("contacto", "id_contacto = ?", new String[]{String.valueOf(id)});
+        db.close();
         return true;
     }
 
@@ -153,6 +156,8 @@ public class GestorBBDD extends SQLiteOpenHelper {
         }
 
         contador = cursor.getCount();
+        cursor.close();
+        db.close();
         return contador;
     }
 }
