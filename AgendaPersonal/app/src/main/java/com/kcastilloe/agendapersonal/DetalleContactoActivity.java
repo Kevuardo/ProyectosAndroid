@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -55,7 +56,6 @@ public class DetalleContactoActivity extends AppCompatActivity {
             etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
             etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
             etEmailContactoGuardado.setText(contactoGuardado.getEmail());
-
             byte[] bytesFoto = contactoGuardado.getFoto();
             ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
             Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
@@ -113,5 +113,9 @@ public class DetalleContactoActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void mostrarDatosContacto(View view){
+
     }
 }
