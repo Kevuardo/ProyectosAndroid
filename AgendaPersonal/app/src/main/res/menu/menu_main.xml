@@ -5,11 +5,6 @@
     tools:context=".MainActivity">
 
     <!-- Agregar contacto. -->
-    <item
-        android:id="@+id/action_agregar"
-        android:icon="@drawable/ic_person_add_black_48dp"
-        android:title="Agregar contacto"
-        app:showAsAction="always" />
 
     <!-- Ajustes de la agenda. -->
     <item
