@@ -148,9 +148,9 @@
                         android:id="@+id/etDireccionContactoGuardado"
                         android:focusable="false"
                         android:editable="false"
-                        android:clickable="false"
                         android:textStyle="normal|bold"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:clickable="false" />
 
                 </LinearLayout>
 
