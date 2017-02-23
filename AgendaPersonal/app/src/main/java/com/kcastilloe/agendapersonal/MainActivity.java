@@ -1,8 +1,10 @@
 package com.kcastilloe.agendapersonal;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,16 +63,32 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_agregar:
                 return true;
-            case R.id.action_ajustes:
-                try {
-                    alContactos = gbd.listarContactos();
-                    contactoAlmacenado = alContactos.get(0);
-                    intentCambio = new Intent(this, DetalleContactoActivity.class);
-                    intentCambio.putExtra("id", contactoAlmacenado.getId());
-                    startActivity(intentCambio);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//            case R.id.action_ajustes:
+//                try {
+//                    alContactos = gbd.listarContactos();
+//                    contactoAlmacenado = alContactos.get(0);
+//                    intentCambio = new Intent(this, DetalleContactoActivity.class);
+//                    intentCambio.putExtra("id", contactoAlmacenado.getId());
+//                    startActivity(intentCambio);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                return true;
+            case R.id.action_info:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Creado por Kevin Castillo Escudero, 2017.\n\nContacto: kcastilloescudero@gmail.com");
+                builder.setTitle("Información de la app");
+                builder.setPositiveButton("Cerrar info", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+            case R.id.action_extra:
+                Toast.makeText(this, "Has clickado en extra", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -119,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             lvListaContactos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                /* Llama al método de muestra de menú desplegable. */
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
@@ -140,8 +159,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intentCambio);
     }
 
+    /* Muestra el menú Pop-Up cuando se hace una pulsación larga en un item de la lista. */
+    public void mostrarMenuPopup(View view){
+
+    }
+
     /* Método para llamar al contacto seleccionado. */
-    private void llamarContacto() {
+    private void llamarContacto(String telefono) {
 
     }
 }
