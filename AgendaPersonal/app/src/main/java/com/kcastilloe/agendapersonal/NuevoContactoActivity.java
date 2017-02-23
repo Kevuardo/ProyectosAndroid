@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.kcastilloe.agendapersonal.modelo.Contacto;
 import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class NuevoContactoActivity extends AppCompatActivity {
@@ -26,6 +25,8 @@ public class NuevoContactoActivity extends AppCompatActivity {
     private FloatingActionButton fabFoto;
     private Contacto nuevoContacto;
     private GestorBBDD gbd = new GestorBBDD(this);
+    private boolean fotoHecha = false;
+    private final int REQUEST_FOTO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +39,19 @@ public class NuevoContactoActivity extends AppCompatActivity {
         etEmailContacto = (EditText) findViewById(R.id.etEmailContacto);
         ivImagenContacto = (ImageView) findViewById(R.id.ivImagenContacto);
         fabFoto = (FloatingActionButton) findViewById(R.id.fabFoto);
-
+        /* Añade un ClickListener al FloatingActionButton. */
         fabFoto.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                   startActivityForResult(intentCamara, 0);
+                   try {
+                       Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        /* Evalúa si hay un componente que pueda ejecutar la acción. */
+                       if (intentCamara.resolveActivity(getPackageManager()) != null) {
+                           startActivityForResult(intentCamara, REQUEST_FOTO);
+                       }
+                   } catch (Exception e) {
+                       Toast.makeText(NuevoContactoActivity.this, "No se ha podido abrir la cámara para hacer una foto al contacto.", Toast.LENGTH_SHORT).show();
+                   }
                }
            }
         );
@@ -52,8 +60,12 @@ public class NuevoContactoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        ivImagenContacto.setImageBitmap(bitmap);
+        if (requestCode == REQUEST_FOTO && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            ivImagenContacto.setImageBitmap(bitmap);
+            fotoHecha = true; /* Evalúa que la foto esté hecha para la creación de un nuevo contacto. */
+        }
     }
 
     public void crearNuevoContacto(View view) {
@@ -62,37 +74,36 @@ public class NuevoContactoActivity extends AppCompatActivity {
         String direccionContacto = etDireccionContacto.getText().toString();
         String emailContacto = etEmailContacto.getText().toString();
         byte[] fotoContacto = new byte[0];
-        Toast t;
 
+        /* Evalúa que los TextView no sean nulos. */
         if (nombreContacto.compareToIgnoreCase("") == 0) {
-            t = Toast.makeText(this, "Introduzca un nombre, por favor.", Toast.LENGTH_LONG);
-            t.show();
+            Toast.makeText(this, "Introduzca un nombre, por favor.", Toast.LENGTH_LONG).show();
         } else {
             if (telefonoContacto.compareToIgnoreCase("") == 0) {
-                t = Toast.makeText(this, "Introduzca un teléfono, por favor.", Toast.LENGTH_LONG);
-                t.show();
+                Toast.makeText(this, "Introduzca un teléfono, por favor.", Toast.LENGTH_LONG).show();
             } else {
                 if (direccionContacto.compareToIgnoreCase("") == 0) {
-                    t = Toast.makeText(this, "Introduzca una dirección, por favor.", Toast.LENGTH_LONG);
-                    t.show();
+                    Toast.makeText(this, "Introduzca una dirección, por favor.", Toast.LENGTH_LONG).show();
                 } else {
                     if (emailContacto.compareToIgnoreCase("") == 0) {
-                        t = Toast.makeText(this, "Introduzca un e-mail, por favor.", Toast.LENGTH_LONG);
-                        t.show();
+                        Toast.makeText(this, "Introduzca un e-mail, por favor.", Toast.LENGTH_LONG).show();
                     } else {
-                        Bitmap bitmap = ((BitmapDrawable) ivImagenContacto.getDrawable()).getBitmap();
-                        ByteArrayOutputStream bytesEscritura = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytesEscritura);
-                        fotoContacto = bytesEscritura.toByteArray();
-                        nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
-                        try {
-                            gbd.agregarContacto(nuevoContacto);
-                            gbd.listarContactos();
-                            t = Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG);
-                            t.show();
-                            finish();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if (!fotoHecha) {
+                            Toast.makeText(this, "Haga una foto con la que guardar al contacto.", Toast.LENGTH_LONG).show();
+                        } else {
+                            Bitmap bitmap = ((BitmapDrawable) ivImagenContacto.getDrawable()).getBitmap();
+                            ByteArrayOutputStream bytesEscritura = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytesEscritura);
+                            fotoContacto = bytesEscritura.toByteArray();
+                            nuevoContacto = new Contacto(nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
+                            try {
+                                gbd.agregarContacto(nuevoContacto);
+                                gbd.listarContactos();
+                                Toast.makeText(this, "Contacto creado con éxito.", Toast.LENGTH_LONG).show();
+                                finish();
+                            } catch (Exception e) {
+                                Toast.makeText(this, "Se ha producido un error al crear el contacto.", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 }
