@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_context_llamar"
+        android:title="Llamar"></item>
+    <item
+        android:id="@+id/action_context_consultar"
+        android:title="Consultar"></item>
+    <item
+        android:id="@+id/action_context_editar"
+        android:title="Editar"></item>
+    <item
+        android:id="@+id/action_context_compartir"
+        android:title="Compartir"></item>
+    <item
+        android:id="@+id/action_context_eliminar"
+        android:title="Eliminar"></item>
+</menu>
