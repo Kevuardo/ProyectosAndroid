@@ -1,13 +1,18 @@
 package com.kcastilloe.agendapersonal;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Contacto contactoAlmacenado;
     private ArrayList<Contacto> alContactos = new ArrayList();
     private Intent intentCambio;
+    private int idItemLista = 0; /* El id del item sobre el que se abre el menú contextual. */
 
     /* Este método es llamado cuando se crea la actividad. */
     @Override
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         tvCabeceraContador = (TextView) findViewById(R.id.tvCabeceraContador);
         lvListaContactos = (ListView) findViewById(R.id.lvListaContactos);
+        registerForContextMenu(lvListaContactos); /* Para añadir el menú contextual. */
     }
 
     /* Este método es llamado cuando la actividad pasa a primer plano, incluyendo el inicio de la app. */
@@ -62,19 +69,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_agregar:
-                return true;
-//            case R.id.action_ajustes:
-//                try {
-//                    alContactos = gbd.listarContactos();
-//                    contactoAlmacenado = alContactos.get(0);
-//                    intentCambio = new Intent(this, DetalleContactoActivity.class);
-//                    intentCambio.putExtra("id", contactoAlmacenado.getId());
-//                    startActivity(intentCambio);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                return true;
             case R.id.action_info:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Creado por Kevin Castillo Escudero, 2017.\n\nContacto: kcastilloescudero@gmail.com");
@@ -89,14 +83,14 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
                 return true;
             case R.id.action_extra:
-                Toast.makeText(this, "Has clickado en extra", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Próximamente disponible.", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    /* Sirve para contar*/
+    /* Sirve para contar los contactos almacenados en la BD y mostrar el contador al usuario. */
     private void actualizarCabecera() {
         int contador = 0;
         try {
@@ -107,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 tvCabeceraContador.setText(contador + " contactos");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(this, "Se ha producido un error al actualizar la cabecera.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -115,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     recoge los datos necesarios, crea objetos Contacto para cada registro, y los muestra en los items.*/
     private void rellenarLista() {
         /* Se recogen los contactos en un ArrayList. */
-
         alContactos.clear(); /* Se vacía el Arraylist para asegurarse. */
         try {
             alContactos = gbd.listarContactos();
@@ -123,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             lvListaContactos.setAdapter(adaptadorLista);
 
             lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto.*/
+                /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto. */
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
@@ -132,51 +125,79 @@ public class MainActivity extends AppCompatActivity {
                         intentCambio.putExtra("id", contactoAlmacenado.getId());
                         startActivity(intentCambio);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, "Se ha producido un error al tratar de acceder al detalle del contacto.", Toast.LENGTH_LONG).show();
                     }
-                }
-            });
-
-            lvListaContactos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                /* Llama al método de muestra de menú desplegable. */
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        Toast.makeText(MainActivity.this, "Pulsación larga en " + position, Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return true;
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(this, "Se ha producido un error al recuperar los contactos.", Toast.LENGTH_LONG).show();
         }
-        registerForContextMenu(lvListaContactos); /* Para añadir el menú contextual. */
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.lvListaContactos) {
-            String[] itemsMenu = {"Llamar", "Consultar", "Editar", "Compartir", "Eliminar"};
-            for(int i = 0; i < itemsMenu.length; i++){
-                menu.add(Menu.NONE, i, i, itemsMenu[i]);
-            }
-        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_contextual_listview, menu);
     }
 
-    /* MEJORA ÉSTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO. */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        idItemLista = info.position; /* Recoge el item de la lista en el que se ha llamado al menú contextual. */
         switch (item.getItemId()) {
-            case R.id.edit:
-                editNote(info.id);
+            case R.id.action_context_llamar:
+                /* Llama al contacto con el teléfono con el que está almacenado. */
+                contactoAlmacenado = alContactos.get(idItemLista);
+                llamarContacto(contactoAlmacenado.getTelefono());
                 return true;
-            case R.id.delete:
-                deleteNote(info.id);
+            case R.id.action_context_consultar:
+                /* Abre la DetalleContactoActivity con el id del contacto almacenado. */
+                try {
+                    contactoAlmacenado = alContactos.get(idItemLista);
+                    intentCambio = new Intent(MainActivity.this, DetalleContactoActivity.class);
+                    intentCambio.putExtra("id", contactoAlmacenado.getId());
+                    startActivity(intentCambio);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Se ha producido un error al tratar de acceder al detalle del contacto.", Toast.LENGTH_LONG).show();
+                }
+                return true;
+            case R.id.action_context_editar:
+                /* Abre la EditarActivity con el id del contacto almacenado. */
+                Toast.makeText(MainActivity.this, "Editar", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_context_compartir:
+                /* Comparte el contacto por el método que se seleccione posteriormente. */
+                Toast.makeText(MainActivity.this, "Compartir", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_context_eliminar:
+                /* Elimina el contacto seleccionado. */
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("¿Estás seguro?");
+                builder.setTitle("Eliminar contacto");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            contactoAlmacenado = alContactos.get(idItemLista);
+                            gbd.eliminarContacto(contactoAlmacenado.getId());
+                            rellenarLista();
+                            actualizarCabecera();
+                            Toast.makeText(MainActivity.this, "Se ha eliminado correctamente el contacto.", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(MainActivity.this, "Imposible borrar el contacto.", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -189,13 +210,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intentCambio);
     }
 
-    /* Muestra el menú Pop-Up cuando se hace una pulsación larga en un item de la lista. */
-    public void mostrarMenuPopup(View view){
-
-    }
-
     /* Método para llamar al contacto seleccionado. */
     private void llamarContacto(String telefono) {
-
+        try {
+            Intent intentLlamada = new Intent(Intent.ACTION_CALL);
+            intentLlamada.setData(Uri.parse(telefono));
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            startActivity(intentLlamada);
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "Ha ocurrido un error al llamar al contacto.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
