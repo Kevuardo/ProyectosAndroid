@@ -20,6 +20,10 @@
                 android:title="Información de la app"
                 app:showAsAction="ifRoom" />
             <item
+                android:id="@+id/action_vaciar"
+                android:title="Vaciar lista de contactos"
+                app:showAsAction="ifRoom" />
+            <item
                 android:id="@+id/action_extra"
                 android:title="Extras de la aplicación
                 "
