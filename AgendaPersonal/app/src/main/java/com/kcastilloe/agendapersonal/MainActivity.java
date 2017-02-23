@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -150,6 +151,35 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        registerForContextMenu(lvListaContactos); /* Para añadir el menú contextual. */
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.lvListaContactos) {
+            String[] itemsMenu = {"Llamar", "Consultar", "Editar", "Compartir", "Eliminar"};
+            for(int i = 0; i < itemsMenu.length; i++){
+                menu.add(Menu.NONE, i, i, itemsMenu[i]);
+            }
+        }
+    }
+
+    /* MEJORA ÉSTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO. */
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return super.onContextItemSelected(item);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.edit:
+                editNote(info.id);
+                return true;
+            case R.id.delete:
+                deleteNote(info.id);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
