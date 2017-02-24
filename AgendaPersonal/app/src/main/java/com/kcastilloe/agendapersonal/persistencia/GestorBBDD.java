@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class GestorBBDD extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2; /* La versión de la BD. */
+    private static final int DATABASE_VERSION = 3; /* La versión de la BD. */
     private static final String DATABASE_NAME = "DBAgenda"; /* El nombre de la BD. */
     private ArrayList<Contacto> alContactos = new ArrayList();
 
