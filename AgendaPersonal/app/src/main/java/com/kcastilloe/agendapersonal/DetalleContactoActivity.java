@@ -3,16 +3,22 @@ package com.kcastilloe.agendapersonal;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,7 +33,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
     private Toolbar tbBarraImagen;
     private CollapsingToolbarLayout ctblDisposicionToolbar;
     private GestorBBDD gbd;
-    private EditText etNombreContactoGuardado, etTelefonoContactoGuardado, etDireccionContactoGuardado,etEmailContactoGuardado;
+    private EditText etNombreContactoGuardado, etTelefonoContactoGuardado, etDireccionContactoGuardado, etEmailContactoGuardado;
     private ImageView ivContactoAlmacenado;
     private Contacto contactoGuardado;
     private int idContacto = 0;
@@ -78,8 +84,17 @@ public class DetalleContactoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_compartir:
-                Toast.makeText(DetalleContactoActivity.this, "Compartir contacto.", Toast.LENGTH_SHORT).show();
+            case R.id.action_compartir_sms:
+
+                return true;
+            case R.id.action_compartir_gmail:
+                compartirViaGmail(contactoGuardado);
+                return true;
+            case R.id.action_compartir_whatsapp:
+                compartirViaWhatsApp(contactoGuardado);
+                return true;
+            case R.id.action_compartir_twitter:
+                compartirViaTwitter(contactoGuardado);
                 return true;
             case R.id.action_eliminar:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -115,7 +130,71 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    public void mostrarDatosContacto(View view){
+    private void compartirViaGmail(Contacto contactoGuardado) {
+        try {
+            PackageManager pm = getPackageManager();
+            /* Evalúa si el paquete de Gmail existe, es decir, si está instalada. */
+            PackageInfo info = pm.getPackageInfo("com.google.android.gm", PackageManager.GET_META_DATA);
+            Intent intentEmail = new Intent(Intent.ACTION_SEND);
+            intentEmail.setPackage("com.google.android.gm");
+            intentEmail.setData(Uri.parse("kevincerbero@gmail.com"));
+            intentEmail.setType("text/plain");
+            intentEmail.putExtra(Intent.EXTRA_SUBJECT, "Compartir contacto");
+            intentEmail.putExtra(Intent.EXTRA_TEXT, "¡Echa un vistazo a este  contacto en mi agenda! " +
+                    "\n\nNombre: " + contactoGuardado.getNombre() +
+                    ";\nTeléfono: " + contactoGuardado.getTelefono() +
+                    ";\nE-mail: " + contactoGuardado.getEmail());
+            startActivity(intentEmail);
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(this, "Gmail no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void compartirViaWhatsApp(Contacto contactoGuardado){
+        try {
+            PackageManager pm = getPackageManager();
+            /* Evalúa si el paquete de WhatsApp existe, es decir, si está instalada. */
+            PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+            Intent intentWhatsApp = new Intent(Intent.ACTION_SEND);
+            //intentWhatsApp.setType("image/*");
+            intentWhatsApp.setType("text/plain");
+            String textoMensaje = "¡Echa un vistazo a este  contacto en mi agenda!" +
+                "\n\nNombre: " + contactoGuardado.getNombre() +
+                ";\nTeléfono: " + contactoGuardado.getTelefono() +
+                ";\nE-mail: " + contactoGuardado.getEmail();
+            intentWhatsApp.setPackage("com.whatsapp");
+
+            intentWhatsApp.putExtra(Intent.EXTRA_TEXT, textoMensaje);
+            startActivity(intentWhatsApp);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(this, "WhatsApp no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void compartirViaTwitter(Contacto contactoGuardado){
+        try {
+            PackageManager pm = getPackageManager();
+            /* Evalúa si el paquete de Twitter existe, es decir, si está instalada. */
+            PackageInfo info = pm.getPackageInfo("com.twitter.android", PackageManager.GET_META_DATA);
+            Intent intentTwitter = new Intent(Intent.ACTION_SEND);
+            //intentTwitter.setType("image/*");
+            intentTwitter.setType("text/plain");
+            String textoMensaje = "¡Echa un vistazo a este  contacto en mi agenda!" +
+                    "\n\nNombre: " + contactoGuardado.getNombre() +
+                    ";\nTeléfono: " + contactoGuardado.getTelefono() +
+                    ";\nE-mail: " + contactoGuardado.getEmail();
+            intentTwitter.setPackage("com.twitter.android");
+
+            intentTwitter.putExtra(Intent.EXTRA_TEXT, textoMensaje);
+            startActivity(intentTwitter);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(this, "Twitter no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void mostrarDatosContacto(View view) {
+        /* Evalúa qué botón lo ha activado: siguiente o anterior.*/
     }
 }
