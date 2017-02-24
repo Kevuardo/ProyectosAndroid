@@ -112,7 +112,17 @@ public class MainActivity extends AppCompatActivity {
                 dialogVaciar.show();
                 return true;
             case R.id.action_extra:
-                Toast.makeText(this, "Próximamente disponible.", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builderExtra = new AlertDialog.Builder(this);
+                builderExtra.setMessage("Próximamente disponible, ¡no desesperes! ;)");
+                builderExtra.setTitle("¡Pero si está incompleto!");
+                builderExtra.setPositiveButton("Cerrar info", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialogExtra = builderExtra.create();
+                dialogExtra.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -149,13 +159,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Se ha producido un error al tratar de acceder al detalle del contacto.", Toast.LENGTH_LONG).show();
                 }
                 return true;
-            case R.id.action_context_editar:
-                /* Abre la EditarActivity con el id del contacto almacenado. */
-                Toast.makeText(MainActivity.this, "Editar", Toast.LENGTH_LONG).show();
-                return true;
+//            case R.id.action_context_editar:
+//                /* Abre la EditarActivity con el id del contacto almacenado. */
+//                Toast.makeText(MainActivity.this, "Editar", Toast.LENGTH_LONG).show();
+//                return true;
             case R.id.action_context_compartir:
                 /* Comparte el contacto por el método que se seleccione posteriormente. */
-                Toast.makeText(MainActivity.this, "Compartir", Toast.LENGTH_LONG).show();
+                contactoAlmacenado = alContactos.get(idItemLista);
+                compartirContacto(contactoAlmacenado);
                 return true;
             case R.id.action_context_eliminar:
                 /* Elimina el contacto seleccionado. */
@@ -254,5 +265,15 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(MainActivity.this, "Ha ocurrido un error al llamar al contacto.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void compartirContacto(Contacto contactoAlmacenado){
+        Intent intentCompartir = new Intent(Intent.ACTION_SEND);
+        intentCompartir.setType("text/plain");
+        intentCompartir.putExtra(Intent.EXTRA_TEXT, "¡Echa un vistazo a este  contacto en mi agenda! " +
+                "\n\nNombre: " + contactoAlmacenado.getNombre() +
+                ";\nTeléfono: " + contactoAlmacenado.getTelefono() +
+                ";\nE-mail: " + contactoAlmacenado.getEmail());
+        startActivity(Intent.createChooser(intentCompartir, "Compartir con..."));
     }
 }
