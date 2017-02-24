@@ -152,7 +152,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
             System.out.println("\nRegistro " + (i + 1) + ": id =  " + alContactos.get(i).getId() +
                     ", nombre = " + alContactos.get(i).getNombre() + ", telefono = " + alContactos.get(i).getTelefono() +
                     ", dirección = " + alContactos.get(i).getDireccion() + ", email = " + alContactos.get(i).getEmail() +
-                    ", foto = " +  alContactos.get(i).getFoto() + ".");
+                    ", foto = " + alContactos.get(i).getFoto() + ".");
         }
 
         contador = cursor.getCount();

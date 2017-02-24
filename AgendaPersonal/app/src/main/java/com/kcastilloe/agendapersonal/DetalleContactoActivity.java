@@ -85,7 +85,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_compartir_sms:
-
+                compartirViaSMS(contactoGuardado);
                 return true;
             case R.id.action_compartir_gmail:
                 compartirViaGmail(contactoGuardado);
@@ -130,6 +130,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
+    /* Sirve para compartir el contacto a través de SMS. */
+    private void compartirViaSMS(Contacto contactoGuardado){
+
+    }
+
+    /* Sirve para compartir el contacto a través de Gmail. */
     private void compartirViaGmail(Contacto contactoGuardado) {
         try {
             PackageManager pm = getPackageManager();
@@ -150,6 +156,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
+    /* Sirve para compartir el contacto a través de WhatsApp. */
     private void compartirViaWhatsApp(Contacto contactoGuardado){
         try {
             PackageManager pm = getPackageManager();
@@ -172,6 +179,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
+    /* Sirve para compartir el contacto a través de Twitter. */
     private void compartirViaTwitter(Contacto contactoGuardado){
         try {
             PackageManager pm = getPackageManager();
