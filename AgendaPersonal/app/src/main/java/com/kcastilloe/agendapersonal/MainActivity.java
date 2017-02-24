@@ -119,50 +119,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* Sirve para contar los contactos almacenados en la BD y mostrar el contador al usuario. */
-    private void actualizarCabecera() {
-        int contador = 0;
-        try {
-            contador = gbd.contarContactos();
-            if (contador == 1) {
-                tvCabeceraContador.setText(contador + " contacto");
-            } else {
-                tvCabeceraContador.setText(contador + " contactos");
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Se ha producido un error al actualizar la cabecera.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /* Para rellenar la lista de contactos cada vez que se inicia la actividad. Contacta con la BD,
-    recoge los datos necesarios, crea objetos Contacto para cada registro, y los muestra en los items.*/
-    private void rellenarLista() {
-        /* Se recogen los contactos en un ArrayList. */
-        alContactos.clear(); /* Se vacía el Arraylist para asegurarse. */
-        try {
-            alContactos = gbd.listarContactos();
-            adaptadorLista = new ListaPersonalizada(MainActivity.this, R.layout.item_lista_layout, alContactos);
-            lvListaContactos.setAdapter(adaptadorLista);
-
-            lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto. */
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        contactoAlmacenado = alContactos.get(position);
-                        intentCambio = new Intent(MainActivity.this, DetalleContactoActivity.class);
-                        intentCambio.putExtra("id", contactoAlmacenado.getId());
-                        startActivity(intentCambio);
-                    } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, "Se ha producido un error al tratar de acceder al detalle del contacto.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Toast.makeText(this, "Se ha producido un error al recuperar los contactos.", Toast.LENGTH_LONG).show();
-        }
-    }
-
     /* Cuando se cree el menú contextual de los items del ListView será con esta disposición. */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -232,6 +188,50 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    /* Sirve para contar los contactos almacenados en la BD y mostrar el contador al usuario. */
+    private void actualizarCabecera() {
+        int contador = 0;
+        try {
+            contador = gbd.contarContactos();
+            if (contador == 1) {
+                tvCabeceraContador.setText(contador + " contacto");
+            } else {
+                tvCabeceraContador.setText(contador + " contactos");
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Se ha producido un error al actualizar la cabecera.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /* Para rellenar la lista de contactos cada vez que se inicia la actividad. Contacta con la BD,
+    recoge los datos necesarios, crea objetos Contacto para cada registro, y los muestra en los items.*/
+    private void rellenarLista() {
+        /* Se recogen los contactos en un ArrayList. */
+        alContactos.clear(); /* Se vacía el Arraylist para asegurarse. */
+        try {
+            alContactos = gbd.listarContactos();
+            adaptadorLista = new ListaPersonalizada(MainActivity.this, R.layout.item_lista_layout, alContactos);
+            lvListaContactos.setAdapter(adaptadorLista);
+
+            lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto. */
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        contactoAlmacenado = alContactos.get(position);
+                        intentCambio = new Intent(MainActivity.this, DetalleContactoActivity.class);
+                        intentCambio.putExtra("id", contactoAlmacenado.getId());
+                        startActivity(intentCambio);
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Se ha producido un error al tratar de acceder al detalle del contacto.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, "Se ha producido un error al recuperar los contactos.", Toast.LENGTH_LONG).show();
         }
     }
 
