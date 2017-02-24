@@ -49,11 +49,6 @@ public class DetalleContactoActivity extends AppCompatActivity {
         etDireccionContactoGuardado = (EditText) findViewById(R.id.etDireccionContactoGuardado);
         etEmailContactoGuardado = (EditText) findViewById(R.id.etEmailContactoGuardado);
         ivContactoAlmacenado = (ImageView) findViewById(R.id.ivContactoAlmacenado);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         Intent intentApertura = getIntent();
         idContacto = intentApertura.getIntExtra("id", 1); /* Recoge el ID que le envía el Intent. */
         gbd = new GestorBBDD(this);
@@ -74,6 +69,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
             finish();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,12 +119,14 @@ public class DetalleContactoActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 return true;
-            case R.id.action_ubicar_abrirmapa:
+            case R.id.action_ubicar_localizar:
                 ubicarContactoMaps(contactoGuardado);
-                Toast.makeText(DetalleContactoActivity.this, "Abrir mapa.", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_ubicar_navegar:
+                navegarContactoMaps(contactoGuardado);
                 return true;
             case R.id.action_ubicar_distancia:
-                Toast.makeText(DetalleContactoActivity.this, "Distancia.", Toast.LENGTH_LONG).show();
+                medirDistanciaMaps(contactoGuardado);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -324,17 +322,36 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
+    /* Ubica al contacto en Maps. */
     private void ubicarContactoMaps(Contacto contactoGuardado){
         try {
             PackageManager pm = getPackageManager();
             /* Evalúa si el paquete de Maps existe, es decir, si está instalada. */
             PackageInfo info = pm.getPackageInfo("com.google.android.apps.maps", PackageManager.GET_META_DATA);
-            Intent intentMaps = new Intent(Intent.ACTION_SEND);
+            Intent intentMaps = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.es/maps/place/" + contactoGuardado.getDireccion()));
             intentMaps.setPackage("com.google.android.apps.maps");
             startActivity(intentMaps);
-
         } catch (PackageManager.NameNotFoundException e) {
             Toast.makeText(this, "Maps no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /* Ubica al contacto y abre la navegación en Maps. */
+    private void navegarContactoMaps(Contacto contactoGuardado){
+        try {
+            PackageManager pm = getPackageManager();
+            /* Evalúa si el paquete de Maps existe, es decir, si está instalada. */
+            PackageInfo info = pm.getPackageInfo("com.google.android.apps.maps", PackageManager.GET_META_DATA);
+            Intent intentMaps = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + contactoGuardado.getDireccion()));
+            intentMaps.setPackage("com.google.android.apps.maps");
+            startActivity(intentMaps);
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(this, "Maps no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /* Ubica al contacto y muestra la distancia hasta él. */
+    private void medirDistanciaMaps(Contacto contactoGuardado){
+
     }
 }
