@@ -14,7 +14,6 @@ public class GestorBBDD extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 2; /* La versión de la BD. */
     private static final String DATABASE_NAME = "DBAgenda"; /* El nombre de la BD. */
-    private static final String[] COLUMNAS = {"id_contacto", "nombre_contacto", "telefono_contacto", "direccion_contacto", "email_contacto"};
     private ArrayList<Contacto> alContactos = new ArrayList();
 
     public GestorBBDD(Context context) {
@@ -103,6 +102,7 @@ public class GestorBBDD extends SQLiteOpenHelper {
         return contactoAlmacenado;
     }
 
+    /* Método usado para vaciar por completo la base de datos. */
     public boolean eliminarTodosContactos() throws Exception {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -159,5 +159,135 @@ public class GestorBBDD extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return contador;
+    }
+
+    /* Evalúa si el contacto actual es el primero para facilitar la muestra en DetalleContactoActivity. */
+    public boolean evaluarPrimerContacto(int id) throws Exception {
+        int idPrimerContacto = 0;
+        /* Recibe como parámetro el id del contacto que se muestra actualmente. */
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select min(id_contacto) from contacto", null);
+        cursor.moveToFirst();
+        idPrimerContacto = cursor.getInt(0);
+        if (idPrimerContacto == id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Evalúa si el contacto actual es el primero para facilitar la muestra en DetalleContactoActivity. */
+    public boolean evaluarUltimoContacto(int id) throws Exception {
+        int idUltimoContacto = 0;
+        /* Recibe como parámetro el id del contacto que se muestra actualmente. */
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select max(id_contacto) from contacto", null);
+        cursor.moveToFirst();
+        idUltimoContacto = cursor.getInt(0);
+        if (idUltimoContacto == id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /* Recupera el primer registro en la tabla. */
+    public Contacto recuperarPrimerContacto(int id) throws Exception {
+        int idContacto = 0;
+        String nombreContacto = null;
+        String telefonoContacto = null;
+        String direccionContacto = null;
+        String emailContacto = null;
+        byte[] fotoContacto = new byte[0];
+        Contacto contactoAlmacenado;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from contacto where id_contacto = (select min(id_contacto) from contacto)", null);
+        cursor.moveToFirst();
+        idContacto = cursor.getInt(0);
+        nombreContacto = cursor.getString(1);
+        telefonoContacto = cursor.getString(2);
+        direccionContacto = cursor.getString(3);
+        emailContacto = cursor.getString(4);
+        fotoContacto = cursor.getBlob(5);
+        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
+        cursor.close();
+        db.close();
+        return contactoAlmacenado;
+    }
+
+    /* Recupera el último registro en la tabla. */
+    public Contacto recuperarUltimoContacto(int id) throws Exception {
+        int idContacto = 0;
+        String nombreContacto = null;
+        String telefonoContacto = null;
+        String direccionContacto = null;
+        String emailContacto = null;
+        byte[] fotoContacto = new byte[0];
+        Contacto contactoAlmacenado;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from contacto where id_contacto = (select max(id_contacto) from contacto)", null);
+        cursor.moveToFirst();
+        idContacto = cursor.getInt(0);
+        nombreContacto = cursor.getString(1);
+        telefonoContacto = cursor.getString(2);
+        direccionContacto = cursor.getString(3);
+        emailContacto = cursor.getString(4);
+        fotoContacto = cursor.getBlob(5);
+        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
+        cursor.close();
+        db.close();
+        return contactoAlmacenado;
+    }
+
+    /* Recupera el anterior registro en la tabla al que el usuario está consultando. */
+    public Contacto recuperarAnteriorContacto(int id) throws Exception {
+        int idContacto = 0;
+        String nombreContacto = null;
+        String telefonoContacto = null;
+        String direccionContacto = null;
+        String emailContacto = null;
+        byte[] fotoContacto = new byte[0];
+        Contacto contactoAlmacenado;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from contacto where id_contacto < ? order by id_contacto desc", new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        idContacto = cursor.getInt(0);
+        nombreContacto = cursor.getString(1);
+        telefonoContacto = cursor.getString(2);
+        direccionContacto = cursor.getString(3);
+        emailContacto = cursor.getString(4);
+        fotoContacto = cursor.getBlob(5);
+        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
+        cursor.close();
+        db.close();
+        return contactoAlmacenado;
+    }
+
+    /* Recupera el siguiente registro en la tabla al que el usuario está consultando. */
+    public Contacto recuperarSiguienteContacto(int id) throws Exception {
+        int idContacto = 0;
+        String nombreContacto = null;
+        String telefonoContacto = null;
+        String direccionContacto = null;
+        String emailContacto = null;
+        byte[] fotoContacto = new byte[0];
+        Contacto contactoAlmacenado;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from contacto where id_contacto > ? order by id_contacto asc", new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
+        idContacto = cursor.getInt(0);
+        nombreContacto = cursor.getString(1);
+        telefonoContacto = cursor.getString(2);
+        direccionContacto = cursor.getString(3);
+        emailContacto = cursor.getString(4);
+        fotoContacto = cursor.getBlob(5);
+        contactoAlmacenado = new Contacto(idContacto, nombreContacto, telefonoContacto, direccionContacto, emailContacto, fotoContacto);
+        cursor.close();
+        db.close();
+        return contactoAlmacenado;
     }
 }
