@@ -1,5 +1,6 @@
 package com.kcastilloe.agendapersonal;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -10,15 +11,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,6 +36,8 @@ public class DetalleContactoActivity extends AppCompatActivity {
     private ImageView ivContactoAlmacenado;
     private Contacto contactoGuardado;
     private int idContacto = 0;
+    private boolean primerContacto = false;
+    private boolean ultimoContacto = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +123,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 return true;
-            case R.id.action_editar:
-                Toast.makeText(DetalleContactoActivity.this, "Editar contacto.", Toast.LENGTH_LONG).show();
+            case R.id.action_ubicar_abrirmapa:
+                ubicarContactoMaps(contactoGuardado);
+                Toast.makeText(DetalleContactoActivity.this, "Abrir mapa.", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_ubicar_distancia:
+                Toast.makeText(DetalleContactoActivity.this, "Distancia.", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -132,7 +137,13 @@ public class DetalleContactoActivity extends AppCompatActivity {
 
     /* Sirve para compartir el contacto a través de SMS. */
     private void compartirViaSMS(Contacto contactoGuardado){
-
+        Intent intentSms = new Intent(Intent.ACTION_VIEW);
+        intentSms.setType("vnd.android-dir/mms-sms");
+        intentSms.putExtra("sms_body","¡Echa un vistazo a este  contacto en mi agenda! " +
+                "\n\nNombre: " + contactoGuardado.getNombre() +
+                ";\nTeléfono: " + contactoGuardado.getTelefono() +
+                ";\nE-mail: " + contactoGuardado.getEmail());
+        startActivity(intentSms);
     }
 
     /* Sirve para compartir el contacto a través de Gmail. */
@@ -202,7 +213,128 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
+    /* Método encargado de actualizar los campos de muestra del detalle del contacto al navegar entre contactos. */
     public void mostrarDatosContacto(View view) {
         /* Evalúa qué botón lo ha activado: siguiente o anterior.*/
+        int idContactoActual = contactoGuardado.getId();
+        if (view.getId() == R.id.btnContactoAnterior) {
+            /* A continuación evalúa si el contacto es el primero de la lista. */
+            try {
+                primerContacto = gbd.evaluarPrimerContacto(idContactoActual);
+                /* En caso afirmativo, carga los datos del último contacto. */
+                if (primerContacto) {
+                    try {
+                        contactoGuardado = gbd.recuperarUltimoContacto(idContactoActual);
+                        etNombreContactoGuardado.setText(contactoGuardado.getNombre());
+                        etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
+                        etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
+                        etEmailContactoGuardado.setText(contactoGuardado.getEmail());
+                        byte[] bytesFoto = contactoGuardado.getFoto();
+                        ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
+                        Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
+                        ivContactoAlmacenado.setImageBitmap(imagenContacto);
+                    } catch (Exception e) {
+                        Toast t;
+                        t = Toast.makeText(DetalleContactoActivity.this, "No se ha podido acceder al contacto.", Toast.LENGTH_LONG);
+                        t.show();
+                        finish();
+                    }
+                } else {
+                    /* En caso negativo, recoge el anterior contacto. */
+                    try {
+                        contactoGuardado = gbd.recuperarAnteriorContacto(idContactoActual);
+                        etNombreContactoGuardado.setText(contactoGuardado.getNombre());
+                        etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
+                        etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
+                        etEmailContactoGuardado.setText(contactoGuardado.getEmail());
+                        byte[] bytesFoto = contactoGuardado.getFoto();
+                        ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
+                        Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
+                        ivContactoAlmacenado.setImageBitmap(imagenContacto);
+                    } catch (Exception e) {
+                        Toast t;
+                        t = Toast.makeText(DetalleContactoActivity.this, "No se ha podido acceder al contacto.", Toast.LENGTH_LONG);
+                        t.show();
+                        finish();
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, "Se ha producido un error al listar los contactos.", Toast.LENGTH_LONG).show();
+            }
+        } else if (view.getId() == R.id.btnContactoSiguiente) {
+            /* A continuación evalúa si el contacto es el último de la lista. */
+            try {
+                ultimoContacto = gbd.evaluarUltimoContacto(idContactoActual);
+                /* En caso afirmativo, carga los datos del primer contacto. */
+                if (ultimoContacto) {
+                    try {
+                        contactoGuardado = gbd.recuperarPrimerContacto(idContactoActual);
+                        etNombreContactoGuardado.setText(contactoGuardado.getNombre());
+                        etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
+                        etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
+                        etEmailContactoGuardado.setText(contactoGuardado.getEmail());
+                        byte[] bytesFoto = contactoGuardado.getFoto();
+                        ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
+                        Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
+                        ivContactoAlmacenado.setImageBitmap(imagenContacto);
+                    } catch (Exception e) {
+                        Toast t;
+                        t = Toast.makeText(DetalleContactoActivity.this, "No se ha podido acceder al contacto.", Toast.LENGTH_LONG);
+                        t.show();
+                        finish();
+                    }
+                } else {
+                    /* En caso negativo, recoge el siguiente contacto. */
+                    try {
+                        contactoGuardado = gbd.recuperarSiguienteContacto(idContactoActual);
+                        etNombreContactoGuardado.setText(contactoGuardado.getNombre());
+                        etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
+                        etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
+                        etEmailContactoGuardado.setText(contactoGuardado.getEmail());
+                        byte[] bytesFoto = contactoGuardado.getFoto();
+                        ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
+                        Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
+                        ivContactoAlmacenado.setImageBitmap(imagenContacto);
+                    } catch (Exception e) {
+                        Toast t;
+                        t = Toast.makeText(DetalleContactoActivity.this, "No se ha podido acceder al contacto.", Toast.LENGTH_LONG);
+                        t.show();
+                        finish();
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, "Se ha producido un error al listar los contactos.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    /* Llama al contacto que se muestra actualmente en el Activity. */
+    public void llamarContactoDetalle(View view){
+        try {
+            String telefono = contactoGuardado.getTelefono();
+            Intent intentLlamada = new Intent(Intent.ACTION_CALL);
+            intentLlamada.setData(Uri.parse(telefono));
+            intentLlamada.setData(Uri.parse("tel:" + telefono));
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            startActivity(intentLlamada);
+        } catch (Exception e) {
+            Toast.makeText(DetalleContactoActivity.this, "Ha ocurrido un error al llamar al contacto.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void ubicarContactoMaps(Contacto contactoGuardado){
+        try {
+            PackageManager pm = getPackageManager();
+            /* Evalúa si el paquete de Maps existe, es decir, si está instalada. */
+            PackageInfo info = pm.getPackageInfo("com.google.android.apps.maps", PackageManager.GET_META_DATA);
+            Intent intentMaps = new Intent(Intent.ACTION_SEND);
+            intentMaps.setPackage("com.google.android.apps.maps");
+            startActivity(intentMaps);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(this, "Maps no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
