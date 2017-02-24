@@ -51,9 +51,13 @@
         <!-- Submenú de ubicación. -->
         <menu>
             <item
-                android:id="@+id/action_ubicar_abrirmapa"
-                android:title="Abrir Maps"
+                android:id="@+id/action_ubicar_localizar"
+                android:title="Ubicar contacto"
                 android:icon="@drawable/maps_48dp"></item>
+            <item
+                android:id="@+id/action_ubicar_navegar"
+                android:title="Navegar hasta el contacto"
+                android:icon="@drawable/navigation_48dp"></item>
             <item
                 android:id="@+id/action_ubicar_distancia"
                 android:title="Distancia con el contacto"
