@@ -185,8 +185,52 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:text="Contacto anterior"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnContactoAnterior"
+                            android:layout_weight="1"
+                            android:onClick="mostrarDatosContacto"
+                            android:background="@color/colorAccent"
+                            android:layout_margin="5dp"/>
+
+                        <Button
+                            android:text="Contacto siguiente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnContactoSiguiente"
+                            android:layout_weight="1"
+                            android:onClick="mostrarDatosContacto"
+                            android:background="@color/colorAccent"
+                            android:layout_margin="5dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:text="Llamar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnLlamarContacto"
+                    android:layout_weight="1"
+                    android:onClick="llamarContactoDetalle"
+                    android:background="@color/colorAccent"
+                    android:layout_margin="10dp"/>
+
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
+
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.DrawerLayout>
