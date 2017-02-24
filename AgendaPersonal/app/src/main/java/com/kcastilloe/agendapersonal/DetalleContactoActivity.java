@@ -125,9 +125,9 @@ public class DetalleContactoActivity extends AppCompatActivity {
             case R.id.action_ubicar_navegar:
                 navegarContactoMaps(contactoGuardado);
                 return true;
-            case R.id.action_ubicar_distancia:
-                medirDistanciaMaps(contactoGuardado);
-                return true;
+//            case R.id.action_ubicar_distancia:
+//                medirDistanciaMaps(contactoGuardado);
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -352,6 +352,6 @@ public class DetalleContactoActivity extends AppCompatActivity {
 
     /* Ubica al contacto y muestra la distancia hasta él. */
     private void medirDistanciaMaps(Contacto contactoGuardado){
-
+        
     }
 }

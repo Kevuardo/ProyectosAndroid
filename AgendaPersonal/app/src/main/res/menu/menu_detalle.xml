@@ -58,10 +58,12 @@
                 android:id="@+id/action_ubicar_navegar"
                 android:title="Navegar hasta el contacto"
                 android:icon="@drawable/navigation_48dp"></item>
+            <!--
             <item
                 android:id="@+id/action_ubicar_distancia"
                 android:title="Distancia con el contacto"
                 android:icon="@drawable/ic_location_on_black_48dp"></item>
+                -->
         </menu>
 
     </item>
