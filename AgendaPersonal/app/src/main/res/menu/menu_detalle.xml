@@ -16,16 +16,20 @@
         <menu>
             <item
                 android:id="@+id/action_compartir_sms"
-                android:title="Compartir vía SMS"></item>
+                android:title="Compartir vía SMS"
+                android:icon="@drawable/ic_textsms_black_48dp"></item>
             <item
                 android:id="@+id/action_compartir_gmail"
-                android:title="Compartir vía Gmail"></item>
+                android:title="Compartir vía Gmail"
+                android:icon="@drawable/gmail_48dp"></item>
             <item
                 android:id="@+id/action_compartir_whatsapp"
-                android:title="Compartir vía WhatsApp"></item>
+                android:title="Compartir vía WhatsApp"
+                android:icon="@drawable/whatsapp_48dp"></item>
             <item
                 android:id="@+id/action_compartir_twitter"
-                android:title="Compartir vía Twitter"></item>
+                android:title="Compartir vía Twitter"
+                android:icon="@drawable/twitter_48dp"></item>
         </menu>
 
     </item>
@@ -37,10 +41,24 @@
         android:title="Eliminar contacto"
         app:showAsAction="always" />
 
-    <!-- Editar contacto. -->
+    <!-- Ubicar contacto. -->
     <item
-        android:id="@+id/action_editar"
-        android:icon="@drawable/ic_edit_black_48dp"
+        android:id="@+id/action_ubicar"
+        android:icon="@drawable/ic_map_black_48dp"
         android:title="Editar contacto"
-        app:showAsAction="always" />
+        app:showAsAction="always">
+        
+        <!-- Submenú de ubicación. -->
+        <menu>
+            <item
+                android:id="@+id/action_ubicar_abrirmapa"
+                android:title="Abrir Maps"
+                android:icon="@drawable/maps_48dp"></item>
+            <item
+                android:id="@+id/action_ubicar_distancia"
+                android:title="Distancia con el contacto"
+                android:icon="@drawable/ic_location_on_black_48dp"></item>
+        </menu>
+
+    </item>
 </menu>
