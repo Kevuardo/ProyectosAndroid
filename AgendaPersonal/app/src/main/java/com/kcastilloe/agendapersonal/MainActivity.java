@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(this, "Se ha producido un error al recuperar los contactos.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Se ha producido un error al listar los contactos.", Toast.LENGTH_LONG).show();
         }
     }
 
