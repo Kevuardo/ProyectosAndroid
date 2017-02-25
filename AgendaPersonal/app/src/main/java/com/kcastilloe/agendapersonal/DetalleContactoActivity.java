@@ -10,11 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +25,13 @@ import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
 import java.io.ByteArrayInputStream;
 
+/**
+ * La actividad usada para ver los detalles del contacto.
+ *
+ * @author Kevin Castillo Escudero
+ */
 public class DetalleContactoActivity extends AppCompatActivity {
 
-    private Toolbar tbBarraImagen;
-    private CollapsingToolbarLayout ctblDisposicionToolbar;
     private GestorBBDD gbd;
     private EditText etNombreContactoGuardado, etTelefonoContactoGuardado, etDireccionContactoGuardado, etEmailContactoGuardado;
     private ImageView ivContactoAlmacenado;
@@ -70,14 +71,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    /* Analiza cuándo se selecciona un item del ActionBar y la acción a realizar según el que se seleccione. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -125,26 +124,31 @@ public class DetalleContactoActivity extends AppCompatActivity {
             case R.id.action_ubicar_navegar:
                 navegarContactoMaps(contactoGuardado);
                 return true;
-//            case R.id.action_ubicar_distancia:
-//                medirDistanciaMaps(contactoGuardado);
-//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    /* Sirve para compartir el contacto a través de SMS. */
-    private void compartirViaSMS(Contacto contactoGuardado){
+    /**
+     * Sirve para compartir el contacto a través de SMS.
+     *
+     * @param contactoGuardado El contacto del que se recogerán los datos a compartir.
+     */
+    private void compartirViaSMS(Contacto contactoGuardado) {
         Intent intentSms = new Intent(Intent.ACTION_VIEW);
         intentSms.setType("vnd.android-dir/mms-sms");
-        intentSms.putExtra("sms_body","¡Echa un vistazo a este  contacto en mi agenda! " +
+        intentSms.putExtra("sms_body", "¡Echa un vistazo a este  contacto en mi agenda! " +
                 "\n\nNombre: " + contactoGuardado.getNombre() +
                 ";\nTeléfono: " + contactoGuardado.getTelefono() +
                 ";\nE-mail: " + contactoGuardado.getEmail());
         startActivity(intentSms);
     }
 
-    /* Sirve para compartir el contacto a través de Gmail. */
+    /**
+     * Sirve para compartir el contacto a través de Gmail.
+     *
+     * @param contactoGuardado El contacto del que se recogerán los datos a compartir.
+     */
     private void compartirViaGmail(Contacto contactoGuardado) {
         try {
             PackageManager pm = getPackageManager();
@@ -165,8 +169,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    /* Sirve para compartir el contacto a través de WhatsApp. */
-    private void compartirViaWhatsApp(Contacto contactoGuardado){
+    /**
+     * Sirve para compartir el contacto a través de WhatsApp.
+     *
+     * @param contactoGuardado El contacto del que se recogerán los datos a compartir.
+     */
+    private void compartirViaWhatsApp(Contacto contactoGuardado) {
         try {
             PackageManager pm = getPackageManager();
             /* Evalúa si el paquete de WhatsApp existe, es decir, si está instalada. */
@@ -175,9 +183,9 @@ public class DetalleContactoActivity extends AppCompatActivity {
             //intentWhatsApp.setType("image/*");
             intentWhatsApp.setType("text/plain");
             String textoMensaje = "¡Echa un vistazo a este  contacto en mi agenda!" +
-                "\n\nNombre: " + contactoGuardado.getNombre() +
-                ";\nTeléfono: " + contactoGuardado.getTelefono() +
-                ";\nE-mail: " + contactoGuardado.getEmail();
+                    "\n\nNombre: " + contactoGuardado.getNombre() +
+                    ";\nTeléfono: " + contactoGuardado.getTelefono() +
+                    ";\nE-mail: " + contactoGuardado.getEmail();
             intentWhatsApp.setPackage("com.whatsapp");
 
             intentWhatsApp.putExtra(Intent.EXTRA_TEXT, textoMensaje);
@@ -188,8 +196,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    /* Sirve para compartir el contacto a través de Twitter. */
-    private void compartirViaTwitter(Contacto contactoGuardado){
+    /**
+     * Sirve para compartir el contacto a través de Twitter.
+     *
+     * @param contactoGuardado El contacto del que se recogerán los datos a compartir.
+     */
+    private void compartirViaTwitter(Contacto contactoGuardado) {
         try {
             PackageManager pm = getPackageManager();
             /* Evalúa si el paquete de Twitter existe, es decir, si está instalada. */
@@ -211,7 +223,11 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    /* Método encargado de actualizar los campos de muestra del detalle del contacto al navegar entre contactos. */
+    /**
+     * Método encargado de actualizar los campos de muestra del detalle del contacto al navegar entre contactos.
+     *
+     * @param view El elemento desde el que se llama al método; en este caso un botón.
+     */
     public void mostrarDatosContacto(View view) {
         /* Evalúa qué botón lo ha activado: siguiente o anterior.*/
         int idContactoActual = contactoGuardado.getId();
@@ -222,7 +238,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
                 /* En caso afirmativo, carga los datos del último contacto. */
                 if (primerContacto) {
                     try {
-                        contactoGuardado = gbd.recuperarUltimoContacto(idContactoActual);
+                        contactoGuardado = gbd.recuperarUltimoContacto();
                         etNombreContactoGuardado.setText(contactoGuardado.getNombre());
                         etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
                         etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
@@ -266,7 +282,7 @@ public class DetalleContactoActivity extends AppCompatActivity {
                 /* En caso afirmativo, carga los datos del primer contacto. */
                 if (ultimoContacto) {
                     try {
-                        contactoGuardado = gbd.recuperarPrimerContacto(idContactoActual);
+                        contactoGuardado = gbd.recuperarPrimerContacto();
                         etNombreContactoGuardado.setText(contactoGuardado.getNombre());
                         etTelefonoContactoGuardado.setText(contactoGuardado.getTelefono());
                         etDireccionContactoGuardado.setText(contactoGuardado.getDireccion());
@@ -306,8 +322,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    /* Llama al contacto que se muestra actualmente en el Activity. */
-    public void llamarContactoDetalle(View view){
+    /**
+     * Llama al contacto que se muestra actualmente en pantalla.
+     *
+     * @param view El elemento desde el que se llama al método; en este caso un botón.
+     */
+    public void llamarContactoDetalle(View view) {
         try {
             String telefono = contactoGuardado.getTelefono();
             Intent intentLlamada = new Intent(Intent.ACTION_CALL);
@@ -322,8 +342,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    /* Ubica al contacto en Maps. */
-    private void ubicarContactoMaps(Contacto contactoGuardado){
+    /**
+     * Ubica al contacto en Maps.
+     *
+     * @param contactoGuardado El contacto del que se recogerá la dirección a ubicar.
+     */
+    private void ubicarContactoMaps(Contacto contactoGuardado) {
         try {
             PackageManager pm = getPackageManager();
             /* Evalúa si el paquete de Maps existe, es decir, si está instalada. */
@@ -336,8 +360,12 @@ public class DetalleContactoActivity extends AppCompatActivity {
         }
     }
 
-    /* Ubica al contacto y abre la navegación en Maps. */
-    private void navegarContactoMaps(Contacto contactoGuardado){
+    /**
+     * Ubica al contacto y abre la navegación en Maps.
+     *
+     * @param contactoGuardado El contacto del que se recogerá la dirección a ubicar.
+     */
+    private void navegarContactoMaps(Contacto contactoGuardado) {
         try {
             PackageManager pm = getPackageManager();
             /* Evalúa si el paquete de Maps existe, es decir, si está instalada. */
@@ -348,10 +376,5 @@ public class DetalleContactoActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             Toast.makeText(this, "Maps no está instalada en el dispositivo.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /* Ubica al contacto y muestra la distancia hasta él. */
-    private void medirDistanciaMaps(Contacto contactoGuardado){
-        
     }
 }

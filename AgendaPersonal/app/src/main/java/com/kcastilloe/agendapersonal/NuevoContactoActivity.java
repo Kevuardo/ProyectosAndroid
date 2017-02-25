@@ -18,6 +18,11 @@ import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
 import java.io.ByteArrayOutputStream;
 
+/**
+ * La actividad usada para crear un nuevo contacto en la agenda.
+ *
+ * @author Kevin Castillo Escudero
+ */
 public class NuevoContactoActivity extends AppCompatActivity {
 
     private EditText etNombreContacto, etTelefonoContacto, etDireccionContacto, etEmailContacto;
@@ -26,7 +31,7 @@ public class NuevoContactoActivity extends AppCompatActivity {
     private Contacto nuevoContacto;
     private GestorBBDD gbd = new GestorBBDD(this);
     private boolean fotoHecha = false;
-    private final int REQUEST_FOTO = 1;
+    private final int REQUEST_FOTO = 1; /* Constante usada para evaluar que se abra la cámara y evitar que se produzcan interrupciones y errores. */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +46,19 @@ public class NuevoContactoActivity extends AppCompatActivity {
         fabFoto = (FloatingActionButton) findViewById(R.id.fabFoto);
         /* Añade un ClickListener al FloatingActionButton. */
         fabFoto.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   try {
-                       Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                       @Override
+                                       public void onClick(View v) {
+                                           try {
+                                               Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         /* Evalúa si hay un componente que pueda ejecutar la acción. */
-                       if (intentCamara.resolveActivity(getPackageManager()) != null) {
-                           startActivityForResult(intentCamara, REQUEST_FOTO);
-                       }
-                   } catch (Exception e) {
-                       Toast.makeText(NuevoContactoActivity.this, "No se ha podido abrir la cámara para hacer una foto al contacto.", Toast.LENGTH_SHORT).show();
-                   }
-               }
-           }
+                                               if (intentCamara.resolveActivity(getPackageManager()) != null) {
+                                                   startActivityForResult(intentCamara, REQUEST_FOTO);
+                                               }
+                                           } catch (Exception e) {
+                                               Toast.makeText(NuevoContactoActivity.this, "No se ha podido abrir la cámara para hacer una foto al contacto.", Toast.LENGTH_SHORT).show();
+                                           }
+                                       }
+                                   }
         );
     }
 
@@ -68,6 +73,11 @@ public class NuevoContactoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Método encargado de crear un nuevo registro en la BD con los datos que el usuario inserte en los campos.
+     *
+     * @param view El elemento desde el que se llama al método; en este caso un botón.
+     */
     public void crearNuevoContacto(View view) {
         String nombreContacto = etNombreContacto.getText().toString();
         String telefonoContacto = etTelefonoContacto.getText().toString();

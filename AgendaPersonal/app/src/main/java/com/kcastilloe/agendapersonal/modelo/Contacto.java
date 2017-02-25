@@ -1,5 +1,10 @@
 package com.kcastilloe.agendapersonal.modelo;
 
+/**
+ * Clase modelo dedicada a los contactos que se almacenarán en la BD y que el usuario utilizará en la agenda.
+ *
+ * @author Kevin Castillo Escudero
+ */
 public class Contacto {
 
     private int id = 0;
@@ -9,9 +14,16 @@ public class Contacto {
     private String email = null;
     private byte[] foto;
 
-/* Constructor sin id (para la inserción en la BD). */
-
-    public Contacto(String nombre,  String telefono, String direccion, String email, byte[] foto) {
+    /**
+     * Constructor sin id (para la inserción en la BD).
+     *
+     * @param nombre    El nombre del contacto.
+     * @param telefono  El telefono del contacto.
+     * @param direccion La direccion del contacto.
+     * @param email     El email del contacto.
+     * @param foto      La foto del contacto.
+     */
+    public Contacto(String nombre, String telefono, String direccion, String email, byte[] foto) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
@@ -19,8 +31,16 @@ public class Contacto {
         this.foto = foto;
     }
 
-    /* Constructor con id (para la recuperación de datos en la BD y posterior muestra en el ListView). */
-
+    /**
+     * Constructor con id (para la recuperación de datos en la BD y posterior muestra en el ListView).
+     *
+     * @param id        El id del contacto.
+     * @param nombre    El nombre del contacto.
+     * @param telefono  El telefono del contacto.
+     * @param direccion La direccion del contacto.
+     * @param email     El email del contacto.
+     * @param foto      La foto del contacto.
+     */
     public Contacto(int id, String nombre, String telefono, String direccion, String email, byte[] foto) {
         this.id = id;
         this.nombre = nombre;

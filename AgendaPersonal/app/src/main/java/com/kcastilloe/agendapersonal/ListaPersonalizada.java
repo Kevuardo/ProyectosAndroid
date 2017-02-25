@@ -1,10 +1,8 @@
 package com.kcastilloe.agendapersonal;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,11 @@ import com.kcastilloe.agendapersonal.modelo.Contacto;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
+/**
+ * Clase usada para aplicar un modelo sobre la lista en la que se ha de hacer el volcado de datos de los contactos.
+ *
+ * @author Kevin Castillo Escudero
+ */
 public class ListaPersonalizada extends ArrayAdapter<Contacto> {
 
     private ArrayList<Contacto> alContactos = new ArrayList();
@@ -24,6 +27,13 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
     private ImageView ivImagen;
     private int idVistaElemento = 0;
 
+    /**
+     * Constructor de ListaPersonalizada.
+     *
+     * @param context         El contexto actual.
+     * @param idVistaElemento El id de la lista sobre la que se aplicará el modelo.
+     * @param alContactos     La coleción de datos que se usará para rellenar los items de la lista.
+     */
     public ListaPersonalizada(Context context, int idVistaElemento, ArrayList<Contacto> alContactos) {
         super(context, idVistaElemento, alContactos);
         this.idVistaElemento = idVistaElemento;
@@ -57,8 +67,6 @@ public class ListaPersonalizada extends ArrayAdapter<Contacto> {
         ByteArrayInputStream bytesLectura = new ByteArrayInputStream(bytesFoto);
         Bitmap imagenContacto = BitmapFactory.decodeStream(bytesLectura);
         ivImagen.setImageBitmap(imagenContacto);
-
-
 
         return vistaFila; /* Devuelve la vista personalizada de la fila. */
     }

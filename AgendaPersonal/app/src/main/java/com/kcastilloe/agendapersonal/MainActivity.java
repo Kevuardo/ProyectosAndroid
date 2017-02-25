@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,13 @@ import com.kcastilloe.agendapersonal.persistencia.GestorBBDD;
 
 import java.util.ArrayList;
 
+/**
+ * La actividad usada para ver la lista de los contactos guardados.
+ *
+ * @author Kevin Castillo Escudero
+ */
 public class MainActivity extends AppCompatActivity {
+
 
     private ListView lvListaContactos; /* La lista de contactos actual. */
     private TextView tvCabeceraContador;
@@ -38,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean listaVacia = false;
     private int idItemLista = 0; /* El id del item sobre el que se abre el menú contextual. */
 
-    /* Este método es llamado cuando se crea la actividad. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         registerForContextMenu(lvListaContactos); /* Para añadir el menú contextual. */
     }
 
-    /* Este método es llamado cuando la actividad pasa a primer plano, incluyendo el inicio de la app. */
     @Override
     protected void onResume() {
         super.onResume();
@@ -59,14 +62,12 @@ public class MainActivity extends AppCompatActivity {
         actualizarCabecera();
     }
 
-    /* Cuando se cree el menú del ActionBar será con esta disposición. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    /* Analiza cuándo se selecciona un item del ActionBar y la acción a realizar según el que se seleccione. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -129,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* Cuando se cree el menú contextual de los items del ListView será con esta disposición. */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_contextual_listview, menu);
     }
 
-    /* Analiza cuándo se selecciona un item del menú contextual y la acción a realizar según el que se seleccione. */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -159,10 +158,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Se ha producido un error al tratar de acceder al detalle del contacto.", Toast.LENGTH_LONG).show();
                 }
                 return true;
-//            case R.id.action_context_editar:
-//                /* Abre la EditarActivity con el id del contacto almacenado. */
-//                Toast.makeText(MainActivity.this, "Editar", Toast.LENGTH_LONG).show();
-//                return true;
             case R.id.action_context_compartir:
                 /* Comparte el contacto por el método que se seleccione posteriormente. */
                 contactoAlmacenado = alContactos.get(idItemLista);
@@ -202,7 +197,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* Sirve para contar los contactos almacenados en la BD y mostrar el contador al usuario. */
+    /**
+     * Sirve para contar los contactos almacenados en la BD y mostrar el contador al usuario.
+     */
     private void actualizarCabecera() {
         int contador = 0;
         try {
@@ -217,8 +214,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* Para rellenar la lista de contactos cada vez que se inicia la actividad. Contacta con la BD,
-    recoge los datos necesarios, crea objetos Contacto para cada registro, y los muestra en los items.*/
+    /**
+     * Para rellenar la lista de contactos cada vez que se inicia la actividad. Contacta con la BD,
+     * recoge los datos necesarios, crea objetos Contacto para cada registro, y los muestra en los items.
+     */
     private void rellenarLista() {
         /* Se recogen los contactos en un ArrayList. */
         alContactos.clear(); /* Se vacía el Arraylist para asegurarse. */
@@ -227,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
             adaptadorLista = new ListaPersonalizada(MainActivity.this, R.layout.item_lista_layout, alContactos);
             lvListaContactos.setAdapter(adaptadorLista);
 
+            /* El OnClickListener para los items del ListView. */
             lvListaContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 /* Llama al Intent para que cambie a la actividad que muestra el detalle del contacto. */
                 @Override
@@ -246,13 +246,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* Sirve para abrir la actividad necesaria para crear un nuevo contacto. */
+    /**
+     * Sirve para abrir la actividad necesaria para crear un nuevo contacto.
+     *
+     * @param view El elemento desde el que se llama al método; en este caso un botón.
+     */
     public void crearContacto(View view) {
         Intent intentCambio = new Intent(this, NuevoContactoActivity.class);
         startActivity(intentCambio);
     }
 
-    /* Método para llamar al contacto seleccionado. */
+    /**
+     * Método para llamar al contacto seleccionado.
+     *
+     * @param telefono El número de teléfono
+     */
     private void llamarContacto(String telefono) {
         try {
             Intent intentLlamada = new Intent(Intent.ACTION_CALL);
@@ -267,7 +275,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void compartirContacto(Contacto contactoAlmacenado){
+    /**
+     * Sirve para compartir el contacto por cualquier medio de los que se ofrecen con el Chooser.
+     *
+     * @param contactoAlmacenado El contacto del que se recogerán los datos a compartir.
+     */
+    private void compartirContacto(Contacto contactoAlmacenado) {
         Intent intentCompartir = new Intent(Intent.ACTION_SEND);
         intentCompartir.setType("text/plain");
         intentCompartir.putExtra(Intent.EXTRA_TEXT, "¡Echa un vistazo a este  contacto en mi agenda! " +
