@@ -25,7 +25,6 @@
         </activity>
         <activity android:name=".NuevoContactoActivity" />
         <activity android:name=".DetalleContactoActivity" />
-        <activity android:name=".EditarActivity"></activity>
     </application>
 
 </manifest>
